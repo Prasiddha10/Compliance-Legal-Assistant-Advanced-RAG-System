@@ -1,0 +1,1821 @@
+{
+  "start_time": 1751808360.920148,
+  "test_queries": [
+    {
+      "query": "What are the fundamental human rights according to the Universal Declaration?",
+      "timestamp": 1751808364.794769,
+      "processing_time": 3.874610662460327,
+      "rag_result": {
+        "query": "What are the fundamental human rights according to the Universal Declaration?",
+        "response": "The context provided does not contain specific information about the fundamental human rights according to the Universal Declaration. For accurate information on the fundamental human rights according to the Universal Declaration, it is recommended to refer directly to the Universal Declaration of Human Rights document itself.",
+        "retrieved_docs": [
+          {
+            "content": "relating to Human Rights and Fundamental Freedoms - Legal Affairs\n(on.unesco.org/1974Recommendation)\nHow was the 1974 Recommendation implemented\nBox 1\nwithin(cid:31)countries?\nThe pervious evrsion of ...",
+            "metadata": {
+              "document_type": "human_rights_law",
+              "processing_time": 59.7743456363678,
+              "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+              "file_name": "Recommendation-An-explainer-2024.pdf",
+              "document_category": "human_rights_law",
+              "chunk_size": 955,
+              "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+              "chunk_id": 8,
+              "file_size": 5235645,
+              "total_chunks": 29,
+              "uploaded_by": "streamlit_user",
+              "upload_time": 1751644737.810968
+            }
+          },
+          {
+            "content": "and peace and education relating to human rights and fundamental freedoms.\n2 Target 4.7 of SDG 4 on Education inspired the drafting of the newly adopted Recommendation: \u201c\u201cBy 2030, ensure that all lear...",
+            "metadata": {
+              "chunk_size": 963,
+              "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+              "document_category": "human_rights_law",
+              "chunk_id": 6,
+              "file_name": "Recommendation-An-explainer-2024.pdf",
+              "file_hash": "788a7b3e7b7801c28641ff6e13fdf974",
+              "upload_time": 1751634374.1323576,
+              "document_type": "human_rights_law",
+              "total_chunks": 29,
+              "uploaded_by": "streamlit_user",
+              "file_size": 5235645
+            }
+          },
+          {
+            "content": "human rights in(cid:31)the(cid:31)United States of America and the deevlopment of education for\ninternational understanding in Japan,i nFland and eLbanon. In Zimbab,ew new disciplines\newer added to(ci...",
+            "metadata": {
+              "total_chunks": 29,
+              "chunk_size": 980,
+              "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+              "uploaded_by": "streamlit_user",
+              "chunk_id": 9,
+              "processing_time": 59.7743456363678,
+              "document_type": "human_rights_law",
+              "document_category": "human_rights_law",
+              "upload_time": 1751644737.810968,
+              "file_name": "Recommendation-An-explainer-2024.pdf",
+              "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+              "file_size": 5235645
+            }
+          }
+        ],
+        "database_used": "chroma",
+        "metadata": {
+          "retrieval_results": {
+            "query": "What are the fundamental human rights according to the Universal Declaration?",
+            "k": 5,
+            "chroma_results": [
+              {
+                "content": "human rights in the United States of America and the development of education for\ninternational understanding in Japan, Finland and Lebanon. In Zimbabwe, new disciplines\nwere added to the curriculum t...",
+                "score": 0.8787910342216492,
+                "metadata": {
+                  "document_category": "human_rights_law",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "document_type": "human_rights_law",
+                  "uploaded_by": "streamlit_user",
+                  "chunk_size": 935,
+                  "file_hash": "788a7b3e7b7801c28641ff6e13fdf974",
+                  "upload_time": 1751634374.1323576,
+                  "chunk_id": 9,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 29,
+                  "file_size": 5235645
+                }
+              },
+              {
+                "content": "(on.unesco.org/1974Recommendation)\n3\t\nSince 1974, the international community has adopted numerous legal instruments directly relevant to the Recommendation \non\u00a0education for peace, human rights and s...",
+                "score": 0.9367194771766663,
+                "metadata": {
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "chunk_size": 597,
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "uploaded_by": "streamlit_user",
+                  "upload_time": 1751648069.3356304,
+                  "total_chunks": 35,
+                  "file_size": 5235645,
+                  "chunk_id": 13,
+                  "processing_time": 1.2596831321716309,
+                  "document_type": "human_rights_law",
+                  "document_category": "human_rights_law"
+                }
+              },
+              {
+                "content": "human rights in(cid:31)the(cid:31)United States of America and the deevlopment of education for\ninternational understanding in Japan,i nFland and eLbanon. In Zimbab,ew new disciplines\newer added to(ci...",
+                "score": 0.9383624792098999,
+                "metadata": {
+                  "total_chunks": 29,
+                  "chunk_size": 980,
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "uploaded_by": "streamlit_user",
+                  "chunk_id": 9,
+                  "processing_time": 59.7743456363678,
+                  "document_type": "human_rights_law",
+                  "document_category": "human_rights_law",
+                  "upload_time": 1751644737.810968,
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645
+                }
+              },
+              {
+                "content": "and peace and education relating to human rights and fundamental freedoms.\n2 Target 4.7 of SDG 4 on Education inspired the drafting of the newly adopted Recommendation: \u201c\u201cBy 2030, ensure that all lear...",
+                "score": 1.0202176570892334,
+                "metadata": {
+                  "chunk_size": 963,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "document_category": "human_rights_law",
+                  "chunk_id": 6,
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_hash": "788a7b3e7b7801c28641ff6e13fdf974",
+                  "upload_time": 1751634374.1323576,
+                  "document_type": "human_rights_law",
+                  "total_chunks": 29,
+                  "uploaded_by": "streamlit_user",
+                  "file_size": 5235645
+                }
+              },
+              {
+                "content": "relating to Human Rights and Fundamental Freedoms - Legal Affairs\n(on.unesco.org/1974Recommendation)\nHow was the 1974 Recommendation implemented\nBox 1\nwithin(cid:31)countries?\nThe pervious evrsion of ...",
+                "score": 1.057775616645813,
+                "metadata": {
+                  "document_type": "human_rights_law",
+                  "processing_time": 59.7743456363678,
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "document_category": "human_rights_law",
+                  "chunk_size": 955,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "chunk_id": 8,
+                  "file_size": 5235645,
+                  "total_chunks": 29,
+                  "uploaded_by": "streamlit_user",
+                  "upload_time": 1751644737.810968
+                }
+              }
+            ],
+            "pinecone_results": [
+              {
+                "content": "(on.unesco.org/1974Recommendation)\n3\t\nSince 1974, the international community has adopted numerous legal instruments directly relevant to the Recommendation \non\u00a0education for peace, human rights and s...",
+                "score": 0.53129214,
+                "metadata": {
+                  "chunk_id": 13.0,
+                  "chunk_size": 597.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 1.2596831321716309,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 35.0,
+                  "upload_time": 1751648069.3356304,
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "human rights in(cid:31)the(cid:31)United States of America and the deevlopment of education for\ninternational understanding in Japan,i nFland and eLbanon. In Zimbab,ew new disciplines\newer added to(ci...",
+                "score": 0.531197608,
+                "metadata": {
+                  "chunk_id": 9.0,
+                  "chunk_size": 980.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 59.7743456363678,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 29.0,
+                  "upload_time": 1751644737.810968,
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "relating to Human Rights and Fundamental Freedoms - Legal Affairs\n(on.unesco.org/1974Recommendation)\nHow was the 1974 Recommendation implemented\nBox 1\nwithin(cid:31)countries?\nThe pervious evrsion of ...",
+                "score": 0.470801502,
+                "metadata": {
+                  "chunk_id": 8.0,
+                  "chunk_size": 955.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 59.7743456363678,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 29.0,
+                  "upload_time": 1751644737.810968,
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "Nations Declaration on the Rights of Indigenous Peoples, to name just a few.\n5\nWhy was this Recommendation\nadopted?\nInspired by the outcomes of the UNESCO International Commission on the Futures\nof Ed...",
+                "score": 0.457057327,
+                "metadata": {
+                  "chunk_id": 10.0,
+                  "chunk_size": 923.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 59.7743456363678,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 29.0,
+                  "upload_time": 1751644737.810968,
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "international understanding in Japan, Finland and Lebanon. In Zimbabwe, new disciplines \nwere added to\u00a0the\u00a0curriculum to\u00a0promote education for\u00a0peace and\u00a0human rights.\u00a0\nThe UNESCO Recommendation on Edu...",
+                "score": 0.448939443,
+                "metadata": {
+                  "chunk_id": 11.0,
+                  "chunk_size": 959.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 1.2596831321716309,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 35.0,
+                  "upload_time": 1751648069.3356304,
+                  "uploaded_by": "streamlit_user"
+                }
+              }
+            ],
+            "comparison_metrics": {
+              "overlap_ratio": 0.6,
+              "jaccard_similarity": 0.42857142857142855,
+              "chroma_avg_score": 0.9663732528686524,
+              "pinecone_avg_score": 0.48785760400000006
+            }
+          },
+          "num_docs_retrieved": 5,
+          "context_length": 649,
+          "num_docs_used": 3,
+          "model_used": "gpt-3.5-turbo",
+          "evaluation_metrics": {
+            "response_length": 328,
+            "context_utilization": 0.13846153846153847,
+            "query_relevance": 0.7
+          }
+        },
+        "error": null
+      },
+      "retrieval_metrics": {
+        "query": "What are the fundamental human rights according to the Universal Declaration?",
+        "num_retrieved": 3,
+        "num_relevant": 0,
+        "diversity_score": 0.8552669552669553
+      },
+      "generation_metrics": {
+        "generated_text_length": 328,
+        "query": "What are the fundamental human rights according to the Universal Declaration?",
+        "coherence_score": 1.0,
+        "relevance_score": 0.9166666666666667,
+        "fluency_score": 0.6902173913043478,
+        "rouge1_f": 0.2711864406779661,
+        "rouge1_p": 0.34782608695652173,
+        "rouge1_r": 0.2222222222222222,
+        "rouge2_f": 0.1206896551724138,
+        "rouge2_p": 0.15555555555555556,
+        "rouge2_r": 0.09859154929577464,
+        "rougeL_f": 0.1864406779661017,
+        "rougeL_p": 0.2391304347826087,
+        "rougeL_r": 0.1527777777777778,
+        "bleu_score": 0.04811825751885091,
+        "semantic_similarity": 0.6078706979751587,
+        "overall_quality": 0.8355865226620797,
+        "quality_breakdown": {
+          "scores": [
+            1.0,
+            0.9166666666666667,
+            0.6902173913043478,
+            0.1864406779661017,
+            0.6078706979751587
+          ],
+          "weights": [
+            0.15,
+            0.25,
+            0.15,
+            0.1,
+            0.05
+          ],
+          "component_names": [
+            "coherence",
+            "relevance",
+            "fluency",
+            "rouge_similarity",
+            "semantic_similarity"
+          ]
+        }
+      },
+      "judge_evaluation": {
+        "quality_evaluation": {
+          "accuracy": 10,
+          "relevance": 7,
+          "completeness": 5,
+          "clarity": 10,
+          "context_use": 10,
+          "overall_score": 8.4,
+          "judge_model": "gpt-4",
+          "evaluation_type": "quality"
+        },
+        "factual_evaluation": {
+          "factual_accuracy_score": 10,
+          "has_hallucinations": false,
+          "unsupported_claims": [],
+          "incorrect_facts": [],
+          "explanation": "The response accurately states that the context provided does not contain specific information about the fundamental human rights according to the Universal Declaration. It correctly advises to refer directly to the Universal Declaration of Human Rights document for accurate information. There are no unsupported claims, incorrect facts, or hallucinated information.",
+          "judge_model": "gpt-4",
+          "evaluation_type": "factual"
+        },
+        "legal_evaluation": {
+          "legal_accuracy": 10,
+          "human_rights_relevance": 10,
+          "legal_reasoning": 5,
+          "proper_citations": 10,
+          "overall_legal_quality": 8.75,
+          "legal_concepts_identified": [
+            "Universal Declaration of Human Rights"
+          ],
+          "explanation": "The response is legally accurate and highly relevant to human rights law, as it correctly refers to the Universal Declaration of Human Rights. However, it lacks in-depth legal reasoning as it does not provide any specific information about the fundamental human rights according to the Universal Declaration. The response properly cites the Universal Declaration of Human Rights as the relevant legal instrument. The overall legal quality of the response is high, but could be improved with more detailed legal reasoning.",
+          "judge_model": "gpt-4",
+          "evaluation_type": "legal"
+        },
+        "comprehensive_score": 9.049999999999999,
+        "judge_model": "gpt-4"
+      },
+      "overall_performance": 0.7557346090648318,
+      "expected_topics": [
+        "universal declaration",
+        "fundamental rights",
+        "human rights"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "query": "How does international law protect freedom of expression?",
+      "timestamp": 1751808383.7861934,
+      "processing_time": 2.478672981262207,
+      "rag_result": {
+        "query": "How does international law protect freedom of expression?",
+        "response": "International law protects freedom of expression by upholding the right to freedom of thought, belief, religion, and expression. It also bans the advocacy of all forms of hatred. Additionally, legal instruments adopted by the international community, such as the Recommendation on education for peace, human rights, and education, contribute to the protection of freedom of expression. However, the specific details of how international law protects freedom of expression may vary depending on the specific legal instruments and treaties in place.",
+        "retrieved_docs": [
+          {
+            "content": "good) \nPromoting the co-creation \nof\u00a0knowledge \nNon-discriminatory \nUpholding freedom of thought, \nbelief, religion and expression and \nbanishing advocacy of all forms \nof\u00a0hatred \nInstilling an ethic ...",
+            "metadata": {
+              "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+              "file_name": "Recommendation-An-explainer-2024.pdf",
+              "processing_time": 1.2596831321716309,
+              "total_chunks": 35,
+              "chunk_id": 23,
+              "uploaded_by": "streamlit_user",
+              "document_category": "human_rights_law",
+              "upload_time": 1751648069.3356304,
+              "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+              "chunk_size": 800,
+              "document_type": "human_rights_law",
+              "file_size": 5235645
+            }
+          },
+          {
+            "content": "(on.unesco.org/1974Recommendation)\n3\t\nSince 1974, the international community has adopted numerous legal instruments directly relevant to the Recommendation \non\u00a0education for peace, human rights and s...",
+            "metadata": {
+              "chunk_size": 597,
+              "total_chunks": 35,
+              "document_type": "human_rights_law",
+              "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+              "file_name": "Recommendation-An-explainer-2024.pdf",
+              "document_category": "human_rights_law",
+              "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+              "upload_time": 1751648069.3356304,
+              "uploaded_by": "streamlit_user",
+              "processing_time": 1.2596831321716309,
+              "chunk_id": 13,
+              "file_size": 5235645
+            }
+          },
+          {
+            "content": "human rights in(cid:31)the(cid:31)United States of America and the deevlopment of education for\ninternational understanding in Japan,i nFland and eLbanon. In Zimbab,ew new disciplines\newer added to(ci...",
+            "metadata": {
+              "chunk_id": 9,
+              "file_size": 5235645,
+              "uploaded_by": "streamlit_user",
+              "document_type": "human_rights_law",
+              "document_category": "human_rights_law",
+              "processing_time": 59.7743456363678,
+              "upload_time": 1751644737.810968,
+              "chunk_size": 980,
+              "file_name": "Recommendation-An-explainer-2024.pdf",
+              "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+              "total_chunks": 29,
+              "file_hash": "1c8d72710314e9c8e421fbff33c70f31"
+            }
+          }
+        ],
+        "database_used": "chroma",
+        "metadata": {
+          "retrieval_results": {
+            "query": "How does international law protect freedom of expression?",
+            "k": 5,
+            "chroma_results": [
+              {
+                "content": "relating to Human Rights and Fundamental Freedoms - Legal Affairs\n(on.unesco.org/1974Recommendation)\nHow was the 1974 Recommendation implemented\nBox 1\nwithin(cid:31)countries?\nThe pervious evrsion of ...",
+                "score": 1.0081334114074707,
+                "metadata": {
+                  "total_chunks": 29,
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "upload_time": 1751644737.810968,
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645,
+                  "chunk_id": 8,
+                  "uploaded_by": "streamlit_user",
+                  "processing_time": 59.7743456363678,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "chunk_size": 955
+                }
+              },
+              {
+                "content": "activities within countries and to international initiatiev.s In the United Kingdom of Gerat\nBritain and Northern Ierlan,d for (cid:147)eoxramlWpd l(cid:31)p,eoSrt gruadmimee(cid:148)ss ewer launched\n...",
+                "score": 1.1773171424865723,
+                "metadata": {
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "uploaded_by": "streamlit_user",
+                  "chunk_size": 934,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "document_category": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "chunk_id": 7,
+                  "processing_time": 10.715944766998293,
+                  "document_type": "human_rights_law",
+                  "upload_time": 1751642818.3591828,
+                  "file_size": 5235645,
+                  "total_chunks": 28
+                }
+              },
+              {
+                "content": "human rights in(cid:31)the(cid:31)United States of America and the deevlopment of education for\ninternational understanding in Japan,i nFland and eLbanon. In Zimbab,ew new disciplines\newer added to(ci...",
+                "score": 1.2512874603271484,
+                "metadata": {
+                  "chunk_id": 9,
+                  "file_size": 5235645,
+                  "uploaded_by": "streamlit_user",
+                  "document_type": "human_rights_law",
+                  "document_category": "human_rights_law",
+                  "processing_time": 59.7743456363678,
+                  "upload_time": 1751644737.810968,
+                  "chunk_size": 980,
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 29,
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31"
+                }
+              },
+              {
+                "content": "(on.unesco.org/1974Recommendation)\n3\t\nSince 1974, the international community has adopted numerous legal instruments directly relevant to the Recommendation \non\u00a0education for peace, human rights and s...",
+                "score": 1.2532802820205688,
+                "metadata": {
+                  "chunk_size": 597,
+                  "total_chunks": 35,
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "document_category": "human_rights_law",
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "upload_time": 1751648069.3356304,
+                  "uploaded_by": "streamlit_user",
+                  "processing_time": 1.2596831321716309,
+                  "chunk_id": 13,
+                  "file_size": 5235645
+                }
+              },
+              {
+                "content": "good) \nPromoting the co-creation \nof\u00a0knowledge \nNon-discriminatory \nUpholding freedom of thought, \nbelief, religion and expression and \nbanishing advocacy of all forms \nof\u00a0hatred \nInstilling an ethic ...",
+                "score": 1.2726566791534424,
+                "metadata": {
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "processing_time": 1.2596831321716309,
+                  "total_chunks": 35,
+                  "chunk_id": 23,
+                  "uploaded_by": "streamlit_user",
+                  "document_category": "human_rights_law",
+                  "upload_time": 1751648069.3356304,
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "chunk_size": 800,
+                  "document_type": "human_rights_law",
+                  "file_size": 5235645
+                }
+              }
+            ],
+            "pinecone_results": [
+              {
+                "content": "relating to Human Rights and Fundamental Freedoms - Legal Affairs\n(on.unesco.org/1974Recommendation)\nHow was the 1974 Recommendation implemented\nBox 1\nwithin(cid:31)countries?\nThe pervious evrsion of ...",
+                "score": 0.495953202,
+                "metadata": {
+                  "chunk_id": 8.0,
+                  "chunk_size": 955.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 59.7743456363678,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 29.0,
+                  "upload_time": 1751644737.810968,
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "human rights in(cid:31)the(cid:31)United States of America and the deevlopment of education for\ninternational understanding in Japan,i nFland and eLbanon. In Zimbab,ew new disciplines\newer added to(ci...",
+                "score": 0.374265343,
+                "metadata": {
+                  "chunk_id": 9.0,
+                  "chunk_size": 980.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 59.7743456363678,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 29.0,
+                  "upload_time": 1751644737.810968,
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "(on.unesco.org/1974Recommendation)\n3\t\nSince 1974, the international community has adopted numerous legal instruments directly relevant to the Recommendation \non\u00a0education for peace, human rights and s...",
+                "score": 0.372267634,
+                "metadata": {
+                  "chunk_id": 13.0,
+                  "chunk_size": 597.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 1.2596831321716309,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 35.0,
+                  "upload_time": 1751648069.3356304,
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "good) \nPromoting the co-creation \nof\u00a0knowledge \nNon-discriminatory \nUpholding freedom of thought, \nbelief, religion and expression and \nbanishing advocacy of all forms \nof\u00a0hatred \nInstilling an ethic ...",
+                "score": 0.36355558,
+                "metadata": {
+                  "chunk_id": 23.0,
+                  "chunk_size": 800.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 1.2596831321716309,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 35.0,
+                  "upload_time": 1751648069.3356304,
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "which are known to be drivers of\u00a0violent conflict. \nThis Recommendation provides a roadmap to guide our societies towards more just, \nhealthy and peaceful futures for all. \nIt has been formed to help ...",
+                "score": 0.347975522,
+                "metadata": {
+                  "chunk_id": 15.0,
+                  "chunk_size": 994.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 1.2596831321716309,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 35.0,
+                  "upload_time": 1751648069.3356304,
+                  "uploaded_by": "streamlit_user"
+                }
+              }
+            ],
+            "comparison_metrics": {
+              "overlap_ratio": 0.8,
+              "jaccard_similarity": 0.6666666666666666,
+              "chroma_avg_score": 1.1925349950790405,
+              "pinecone_avg_score": 0.3908034562
+            }
+          },
+          "num_docs_retrieved": 5,
+          "context_length": 649,
+          "num_docs_used": 3,
+          "model_used": "gpt-3.5-turbo",
+          "evaluation_metrics": {
+            "response_length": 547,
+            "context_utilization": 0.359375,
+            "query_relevance": 0.625
+          }
+        },
+        "error": null
+      },
+      "retrieval_metrics": {
+        "query": "How does international law protect freedom of expression?",
+        "num_retrieved": 3,
+        "num_relevant": 0,
+        "diversity_score": 0.9035960378983635
+      },
+      "generation_metrics": {
+        "generated_text_length": 547,
+        "query": "How does international law protect freedom of expression?",
+        "coherence_score": 1.0,
+        "relevance_score": 0.74,
+        "fluency_score": 0.8075000000000001,
+        "rouge1_f": 0.4285714285714286,
+        "rouge1_p": 0.45,
+        "rouge1_r": 0.4090909090909091,
+        "rouge2_f": 0.1325301204819277,
+        "rouge2_p": 0.13924050632911392,
+        "rouge2_r": 0.12643678160919541,
+        "rougeL_f": 0.2738095238095238,
+        "rougeL_p": 0.2875,
+        "rougeL_r": 0.26136363636363635,
+        "bleu_score": 0.0994936987443438,
+        "semantic_similarity": 0.823082685470581,
+        "overall_quality": 0.8244658504570425,
+        "quality_breakdown": {
+          "scores": [
+            1.0,
+            0.74,
+            0.8075000000000001,
+            0.2738095238095238,
+            0.823082685470581
+          ],
+          "weights": [
+            0.15,
+            0.25,
+            0.15,
+            0.1,
+            0.05
+          ],
+          "component_names": [
+            "coherence",
+            "relevance",
+            "fluency",
+            "rouge_similarity",
+            "semantic_similarity"
+          ]
+        }
+      },
+      "judge_evaluation": {
+        "quality_evaluation": {
+          "accuracy": 8,
+          "relevance": 8,
+          "completeness": 7,
+          "clarity": 9,
+          "context_use": 5,
+          "overall_score": 7.4,
+          "judge_model": "gpt-4",
+          "evaluation_type": "quality"
+        },
+        "factual_evaluation": {
+          "factual_accuracy_score": 5.0,
+          "has_hallucinations": true,
+          "unsupported_claims": [],
+          "incorrect_facts": [],
+          "explanation": "Could not parse detailed evaluation",
+          "judge_model": "gpt-4",
+          "evaluation_type": "factual"
+        },
+        "legal_evaluation": {
+          "legal_accuracy": 7,
+          "human_rights_relevance": 9,
+          "legal_reasoning": 7,
+          "proper_citations": 6,
+          "overall_legal_quality": 7.25,
+          "legal_concepts_identified": [
+            "Freedom of Expression",
+            "International Law",
+            "Legal Instruments",
+            "Treaties"
+          ],
+          "explanation": "The response is generally accurate and relevant to human rights law, particularly in its reference to freedom of expression as a protected right. However, it could be improved by providing more specific examples of the legal instruments and treaties that protect this right. The mention of the 'Recommendation on education for peace, human rights, and education' is somewhat vague and not directly related to the protection of freedom of expression. The legal reasoning is sound but could be more detailed, particularly in explaining how different legal instruments and treaties may vary in their protection of freedom of expression.",
+          "judge_model": "gpt-4",
+          "evaluation_type": "legal"
+        },
+        "comprehensive_score": 6.55,
+        "judge_model": "gpt-4"
+      },
+      "overall_performance": 0.676286340182817,
+      "expected_topics": [
+        "freedom of expression",
+        "international law",
+        "protection"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "query": "What are the obligations of states regarding refugee protection?",
+      "timestamp": 1751808398.5688784,
+      "processing_time": 1.6306533813476562,
+      "rag_result": {
+        "query": "What are the obligations of states regarding refugee protection?",
+        "response": "Based on the provided context, there is not enough information to accurately answer the question about the obligations of states regarding refugee protection. The context provided focuses on education for peace, human rights, and conflict prevention, but does not specifically address refugee protection obligations of states.",
+        "retrieved_docs": [
+          {
+            "content": "the knowledge, skills, values and attitudes to enable learners\nto contribute to a more inclusive, just and peaceful world.\nStay in touch\ngro.ocsenu@decg yonetnoF ed ecalp ,7\necnarF PS 70 siraP 25357\nn...",
+            "metadata": {
+              "chunk_size": 649,
+              "file_name": "Recommendation-An-explainer-2024.pdf",
+              "document_type": "human_rights_law",
+              "document_category": "human_rights_law",
+              "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+              "total_chunks": 24,
+              "chunk_id": 23,
+              "uploaded_by": "streamlit_user",
+              "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+              "processing_time": 23.687604904174805,
+              "upload_time": 1751637322.9787188,
+              "file_size": 5235645
+            }
+          },
+          {
+            "content": "(on.unesco.org/1974Recommendation)\n3\t\nSince 1974, the international community has adopted numerous legal instruments directly relevant to the Recommendation \non\u00a0education for peace, human rights and s...",
+            "metadata": {
+              "document_type": "human_rights_law",
+              "chunk_id": 13,
+              "document_category": "human_rights_law",
+              "chunk_size": 597,
+              "file_name": "Recommendation-An-explainer-2024.pdf",
+              "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+              "processing_time": 1.2596831321716309,
+              "uploaded_by": "streamlit_user",
+              "total_chunks": 35,
+              "upload_time": 1751648069.3356304,
+              "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+              "file_size": 5235645
+            }
+          },
+          {
+            "content": "which are known to be drivers of\u00a0violent conflict. \nThis Recommendation provides a roadmap to guide our societies towards more just, \nhealthy and peaceful futures for all. \nIt has been formed to help ...",
+            "metadata": {
+              "chunk_id": 15,
+              "chunk_size": 994,
+              "file_size": 5235645,
+              "total_chunks": 35,
+              "document_type": "human_rights_law",
+              "upload_time": 1751648069.3356304,
+              "uploaded_by": "streamlit_user",
+              "file_name": "Recommendation-An-explainer-2024.pdf",
+              "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+              "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+              "document_category": "human_rights_law",
+              "processing_time": 1.2596831321716309
+            }
+          }
+        ],
+        "database_used": "chroma",
+        "metadata": {
+          "retrieval_results": {
+            "query": "What are the obligations of states regarding refugee protection?",
+            "k": 5,
+            "chroma_results": [
+              {
+                "content": "o es tte Mtaember Svithey inT. eenceronferning body (cid:150) the Gal Cenerveme gosupr\normitonstitutional y with their confeps (cid:150) in ce or other sttivislaer legevte whatak\no apply these tion (c...",
+                "score": 1.3252547979354858,
+                "metadata": {
+                  "uploaded_by": "streamlit_user",
+                  "total_chunks": 29,
+                  "processing_time": 59.7743456363678,
+                  "file_size": 5235645,
+                  "document_category": "human_rights_law",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "chunk_id": 12,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "chunk_size": 927,
+                  "upload_time": 1751644737.810968,
+                  "document_type": "human_rights_law"
+                }
+              },
+              {
+                "content": "https://www.unesco.org/en/legal-affairs/rules-procedure-cr?hub=66535 \n\u201cRecommendations\u201d are non-binding legal international documents that \nformulate principles and norms for the international regulat...",
+                "score": 1.3482410907745361,
+                "metadata": {
+                  "processing_time": 1.2596831321716309,
+                  "upload_time": 1751648069.3356304,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645,
+                  "chunk_size": 699,
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "total_chunks": 35,
+                  "uploaded_by": "streamlit_user",
+                  "document_category": "human_rights_law",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "chunk_id": 16
+                }
+              },
+              {
+                "content": "which are known to be drivers of\u00a0violent conflict. \nThis Recommendation provides a roadmap to guide our societies towards more just, \nhealthy and peaceful futures for all. \nIt has been formed to help ...",
+                "score": 1.3932769298553467,
+                "metadata": {
+                  "chunk_id": 15,
+                  "chunk_size": 994,
+                  "file_size": 5235645,
+                  "total_chunks": 35,
+                  "document_type": "human_rights_law",
+                  "upload_time": 1751648069.3356304,
+                  "uploaded_by": "streamlit_user",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "document_category": "human_rights_law",
+                  "processing_time": 1.2596831321716309
+                }
+              },
+              {
+                "content": "(on.unesco.org/1974Recommendation)\n3\t\nSince 1974, the international community has adopted numerous legal instruments directly relevant to the Recommendation \non\u00a0education for peace, human rights and s...",
+                "score": 1.4313188791275024,
+                "metadata": {
+                  "document_type": "human_rights_law",
+                  "chunk_id": 13,
+                  "document_category": "human_rights_law",
+                  "chunk_size": 597,
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "processing_time": 1.2596831321716309,
+                  "uploaded_by": "streamlit_user",
+                  "total_chunks": 35,
+                  "upload_time": 1751648069.3356304,
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_size": 5235645
+                }
+              },
+              {
+                "content": "the knowledge, skills, values and attitudes to enable learners\nto contribute to a more inclusive, just and peaceful world.\nStay in touch\ngro.ocsenu@decg yonetnoF ed ecalp ,7\necnarF PS 70 siraP 25357\nn...",
+                "score": 1.4388859272003174,
+                "metadata": {
+                  "chunk_size": 649,
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "document_type": "human_rights_law",
+                  "document_category": "human_rights_law",
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 24,
+                  "chunk_id": 23,
+                  "uploaded_by": "streamlit_user",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "processing_time": 23.687604904174805,
+                  "upload_time": 1751637322.9787188,
+                  "file_size": 5235645
+                }
+              }
+            ],
+            "pinecone_results": [
+              {
+                "content": "o es tte Mtaember Svithey inT. eenceronferning body (cid:150) the Gal Cenerveme gosupr\normitonstitutional y with their confeps (cid:150) in ce or other sttivislaer legevte whatak\no apply these tion (c...",
+                "score": 0.337287307,
+                "metadata": {
+                  "chunk_id": 12.0,
+                  "chunk_size": 927.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 59.7743456363678,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 29.0,
+                  "upload_time": 1751644737.810968,
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "https://www.unesco.org/en/legal-affairs/rules-procedure-cr?hub=66535 \n\u201cRecommendations\u201d are non-binding legal international documents that \nformulate principles and norms for the international regulat...",
+                "score": 0.325511754,
+                "metadata": {
+                  "chunk_id": 16.0,
+                  "chunk_size": 699.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 1.2596831321716309,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 35.0,
+                  "upload_time": 1751648069.3356304,
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "which are known to be drivers of\u00a0violent conflict. \nThis Recommendation provides a roadmap to guide our societies towards more just, \nhealthy and peaceful futures for all. \nIt has been formed to help ...",
+                "score": 0.304146439,
+                "metadata": {
+                  "chunk_id": 15.0,
+                  "chunk_size": 994.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 1.2596831321716309,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 35.0,
+                  "upload_time": 1751648069.3356304,
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "(on.unesco.org/1974Recommendation)\n3\t\nSince 1974, the international community has adopted numerous legal instruments directly relevant to the Recommendation \non\u00a0education for peace, human rights and s...",
+                "score": 0.284462512,
+                "metadata": {
+                  "chunk_id": 13.0,
+                  "chunk_size": 597.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 1.2596831321716309,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 35.0,
+                  "upload_time": 1751648069.3356304,
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "The UNESCO Recommendation on \nEducation for Peace, Human Rights\nand Sustainable Development \nAn explainer...",
+                "score": 0.261434138,
+                "metadata": {
+                  "chunk_id": 0.0,
+                  "chunk_size": 105.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 1.2596831321716309,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 35.0,
+                  "upload_time": 1751648069.3356304,
+                  "uploaded_by": "streamlit_user"
+                }
+              }
+            ],
+            "comparison_metrics": {
+              "overlap_ratio": 0.8,
+              "jaccard_similarity": 0.6666666666666666,
+              "chroma_avg_score": 1.3873955249786376,
+              "pinecone_avg_score": 0.30256843
+            }
+          },
+          "num_docs_retrieved": 5,
+          "context_length": 649,
+          "num_docs_used": 3,
+          "model_used": "gpt-3.5-turbo",
+          "evaluation_metrics": {
+            "response_length": 326,
+            "context_utilization": 0.11392405063291139,
+            "query_relevance": 0.6666666666666666
+          }
+        },
+        "error": null
+      },
+      "retrieval_metrics": {
+        "query": "What are the obligations of states regarding refugee protection?",
+        "num_retrieved": 3,
+        "num_relevant": 0,
+        "diversity_score": 0.9184726522187823
+      },
+      "generation_metrics": {
+        "generated_text_length": 326,
+        "query": "What are the obligations of states regarding refugee protection?",
+        "coherence_score": 1.0,
+        "relevance_score": 0.8999999999999999,
+        "fluency_score": 0.8271739130434782,
+        "rouge1_f": 0.3100775193798449,
+        "rouge1_p": 0.43478260869565216,
+        "rouge1_r": 0.24096385542168675,
+        "rouge2_f": 0.031496062992125984,
+        "rouge2_p": 0.044444444444444446,
+        "rouge2_r": 0.024390243902439025,
+        "rougeL_f": 0.17054263565891473,
+        "rougeL_p": 0.2391304347826087,
+        "rougeL_r": 0.13253012048192772,
+        "bleu_score": 0.02181952929124788,
+        "semantic_similarity": 0.6896024942398071,
+        "overall_quality": 0.8652450325112057,
+        "quality_breakdown": {
+          "scores": [
+            1.0,
+            0.8999999999999999,
+            0.8271739130434782,
+            0.17054263565891473,
+            0.6896024942398071
+          ],
+          "weights": [
+            0.15,
+            0.25,
+            0.15,
+            0.1,
+            0.05
+          ],
+          "component_names": [
+            "coherence",
+            "relevance",
+            "fluency",
+            "rouge_similarity",
+            "semantic_similarity"
+          ]
+        }
+      },
+      "judge_evaluation": {
+        "quality_evaluation": {
+          "accuracy": 10,
+          "relevance": 10,
+          "completeness": 3,
+          "clarity": 10,
+          "context_use": 10,
+          "overall_score": 8.6,
+          "judge_model": "gpt-4",
+          "evaluation_type": "quality"
+        },
+        "factual_evaluation": {
+          "factual_accuracy_score": 10,
+          "has_hallucinations": false,
+          "unsupported_claims": [],
+          "incorrect_facts": [],
+          "explanation": "The response accurately reflects the provided context. It correctly states that the context does not provide enough information to answer a question about the obligations of states regarding refugee protection. There are no unsupported claims, incorrect facts, or hallucinated information.",
+          "judge_model": "gpt-4",
+          "evaluation_type": "factual"
+        },
+        "legal_evaluation": {
+          "legal_accuracy": 5,
+          "human_rights_relevance": 6,
+          "legal_reasoning": 4,
+          "proper_citations": 0,
+          "overall_legal_quality": 3.75,
+          "legal_concepts_identified": [
+            "Refugee protection",
+            "State obligations"
+          ],
+          "explanation": "The response is somewhat accurate and relevant to human rights law, as it correctly identifies that the query pertains to state obligations regarding refugee protection. However, it fails to provide any substantive information or legal reasoning on the topic. The response does not cite any relevant legal instruments or principles, such as the 1951 Refugee Convention or the principle of non-refoulement, which are central to the question. The overall legal quality of the response is therefore low.",
+          "judge_model": "gpt-4",
+          "evaluation_type": "legal"
+        },
+        "comprehensive_score": 7.45,
+        "judge_model": "gpt-4"
+      },
+      "overall_performance": 0.7195980130044823,
+      "expected_topics": [
+        "refugee",
+        "state obligations",
+        "protection",
+        "asylum"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "query": "How does the European Convention on Human Rights differ from the ICCPR?",
+      "timestamp": 1751808415.6188934,
+      "processing_time": 1.112170696258545,
+      "rag_result": {
+        "query": "How does the European Convention on Human Rights differ from the ICCPR?",
+        "response": "The provided context does not contain information on how the European Convention on Human Rights differs from the ICCPR.",
+        "retrieved_docs": [
+          {
+            "content": "o es tte Mtaember Svithey inT. eenceronferning body (cid:150) the Gal Cenerveme gosupr\normitonstitutional y with their confeps (cid:150) in ce or other sttivislaer legevte whatak\no apply these tion (c...",
+            "metadata": {
+              "document_category": "human_rights_law",
+              "file_size": 5235645,
+              "processing_time": 59.7743456363678,
+              "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+              "uploaded_by": "streamlit_user",
+              "upload_time": 1751644737.810968,
+              "document_type": "human_rights_law",
+              "file_name": "Recommendation-An-explainer-2024.pdf",
+              "chunk_size": 927,
+              "chunk_id": 12,
+              "total_chunks": 29,
+              "file_hash": "1c8d72710314e9c8e421fbff33c70f31"
+            }
+          },
+          {
+            "content": "human rights in the United States of America and the development of education for\ninternational understanding in Japan, Finland and Lebanon. In Zimbabwe, new disciplines\nwere added to the curriculum t...",
+            "metadata": {
+              "uploaded_by": "streamlit_user",
+              "file_name": "Recommendation-An-explainer-2024.pdf",
+              "file_hash": "788a7b3e7b7801c28641ff6e13fdf974",
+              "chunk_size": 935,
+              "file_size": 5235645,
+              "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+              "document_category": "human_rights_law",
+              "chunk_id": 9,
+              "total_chunks": 29,
+              "upload_time": 1751634374.1323576,
+              "document_type": "human_rights_law"
+            }
+          },
+          {
+            "content": "relating to Human Rights and Fundamental Freedoms - Legal Affairs\n(on.unesco.org/1974Recommendation)\nHow was the 1974 Recommendation implemented\nBox 1\nwithin(cid:31)countries?\nThe pervious evrsion of ...",
+            "metadata": {
+              "uploaded_by": "streamlit_user",
+              "document_category": "human_rights_law",
+              "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+              "file_size": 5235645,
+              "chunk_size": 955,
+              "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+              "file_name": "Recommendation-An-explainer-2024.pdf",
+              "document_type": "human_rights_law",
+              "chunk_id": 8,
+              "total_chunks": 29,
+              "upload_time": 1751644737.810968,
+              "processing_time": 59.7743456363678
+            }
+          }
+        ],
+        "database_used": "chroma",
+        "metadata": {
+          "retrieval_results": {
+            "query": "How does the European Convention on Human Rights differ from the ICCPR?",
+            "k": 5,
+            "chroma_results": [
+              {
+                "content": "(on.unesco.org/1974Recommendation)\n3\t\nSince 1974, the international community has adopted numerous legal instruments directly relevant to the Recommendation \non\u00a0education for peace, human rights and s...",
+                "score": 0.8976336121559143,
+                "metadata": {
+                  "file_size": 5235645,
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 35,
+                  "upload_time": 1751648069.3356304,
+                  "processing_time": 1.2596831321716309,
+                  "chunk_id": 13,
+                  "document_type": "human_rights_law",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "chunk_size": 597,
+                  "document_category": "human_rights_law",
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "human rights in(cid:31)the(cid:31)United States of America and the deevlopment of education for\ninternational understanding in Japan,i nFland and eLbanon. In Zimbab,ew new disciplines\newer added to(ci...",
+                "score": 0.9048200249671936,
+                "metadata": {
+                  "uploaded_by": "streamlit_user",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "chunk_size": 980,
+                  "upload_time": 1751644737.810968,
+                  "total_chunks": 29,
+                  "processing_time": 59.7743456363678,
+                  "document_type": "human_rights_law",
+                  "file_size": 5235645,
+                  "document_category": "human_rights_law",
+                  "chunk_id": 9
+                }
+              },
+              {
+                "content": "relating to Human Rights and Fundamental Freedoms - Legal Affairs\n(on.unesco.org/1974Recommendation)\nHow was the 1974 Recommendation implemented\nBox 1\nwithin(cid:31)countries?\nThe pervious evrsion of ...",
+                "score": 0.9982636570930481,
+                "metadata": {
+                  "uploaded_by": "streamlit_user",
+                  "document_category": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_size": 5235645,
+                  "chunk_size": 955,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "document_type": "human_rights_law",
+                  "chunk_id": 8,
+                  "total_chunks": 29,
+                  "upload_time": 1751644737.810968,
+                  "processing_time": 59.7743456363678
+                }
+              },
+              {
+                "content": "human rights in the United States of America and the development of education for\ninternational understanding in Japan, Finland and Lebanon. In Zimbabwe, new disciplines\nwere added to the curriculum t...",
+                "score": 1.022085428237915,
+                "metadata": {
+                  "uploaded_by": "streamlit_user",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_hash": "788a7b3e7b7801c28641ff6e13fdf974",
+                  "chunk_size": 935,
+                  "file_size": 5235645,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "document_category": "human_rights_law",
+                  "chunk_id": 9,
+                  "total_chunks": 29,
+                  "upload_time": 1751634374.1323576,
+                  "document_type": "human_rights_law"
+                }
+              },
+              {
+                "content": "o es tte Mtaember Svithey inT. eenceronferning body (cid:150) the Gal Cenerveme gosupr\normitonstitutional y with their confeps (cid:150) in ce or other sttivislaer legevte whatak\no apply these tion (c...",
+                "score": 1.0226877927780151,
+                "metadata": {
+                  "document_category": "human_rights_law",
+                  "file_size": 5235645,
+                  "processing_time": 59.7743456363678,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "uploaded_by": "streamlit_user",
+                  "upload_time": 1751644737.810968,
+                  "document_type": "human_rights_law",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "chunk_size": 927,
+                  "chunk_id": 12,
+                  "total_chunks": 29,
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31"
+                }
+              }
+            ],
+            "pinecone_results": [
+              {
+                "content": "(on.unesco.org/1974Recommendation)\n3\t\nSince 1974, the international community has adopted numerous legal instruments directly relevant to the Recommendation \non\u00a0education for peace, human rights and s...",
+                "score": 0.550474763,
+                "metadata": {
+                  "chunk_id": 13.0,
+                  "chunk_size": 597.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 1.2596831321716309,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 35.0,
+                  "upload_time": 1751648069.3356304,
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "human rights in(cid:31)the(cid:31)United States of America and the deevlopment of education for\ninternational understanding in Japan,i nFland and eLbanon. In Zimbab,ew new disciplines\newer added to(ci...",
+                "score": 0.547707677,
+                "metadata": {
+                  "chunk_id": 9.0,
+                  "chunk_size": 980.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 59.7743456363678,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 29.0,
+                  "upload_time": 1751644737.810968,
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "relating to Human Rights and Fundamental Freedoms - Legal Affairs\n(on.unesco.org/1974Recommendation)\nHow was the 1974 Recommendation implemented\nBox 1\nwithin(cid:31)countries?\nThe pervious evrsion of ...",
+                "score": 0.500608206,
+                "metadata": {
+                  "chunk_id": 8.0,
+                  "chunk_size": 955.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 59.7743456363678,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 29.0,
+                  "upload_time": 1751644737.810968,
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "o es tte Mtaember Svithey inT. eenceronferning body (cid:150) the Gal Cenerveme gosupr\normitonstitutional y with their confeps (cid:150) in ce or other sttivislaer legevte whatak\no apply these tion (c...",
+                "score": 0.488155514,
+                "metadata": {
+                  "chunk_id": 12.0,
+                  "chunk_size": 927.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 59.7743456363678,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 29.0,
+                  "upload_time": 1751644737.810968,
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "https://www.unesco.org/en/legal-affairs/rules-procedure-cr?hub=66535 \n\u201cRecommendations\u201d are non-binding legal international documents that \nformulate principles and norms for the international regulat...",
+                "score": 0.421766162,
+                "metadata": {
+                  "chunk_id": 16.0,
+                  "chunk_size": 699.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 1.2596831321716309,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 35.0,
+                  "upload_time": 1751648069.3356304,
+                  "uploaded_by": "streamlit_user"
+                }
+              }
+            ],
+            "comparison_metrics": {
+              "overlap_ratio": 0.8,
+              "jaccard_similarity": 0.6666666666666666,
+              "chroma_avg_score": 0.9690981030464172,
+              "pinecone_avg_score": 0.5017424644
+            }
+          },
+          "num_docs_retrieved": 5,
+          "context_length": 649,
+          "num_docs_used": 3,
+          "model_used": "gpt-3.5-turbo",
+          "evaluation_metrics": {
+            "response_length": 120,
+            "context_utilization": 0.05405405405405406,
+            "query_relevance": 0.8181818181818182
+          }
+        },
+        "error": null
+      },
+      "retrieval_metrics": {
+        "query": "How does the European Convention on Human Rights differ from the ICCPR?",
+        "num_retrieved": 3,
+        "num_relevant": 0,
+        "diversity_score": 0.934257602862254
+      },
+      "generation_metrics": {
+        "generated_text_length": 120,
+        "query": "How does the European Convention on Human Rights differ from the ICCPR?",
+        "coherence_score": 0.9,
+        "relevance_score": 0.8571428571428572,
+        "fluency_score": 0.7960526315789473,
+        "rouge1_f": 0.18032786885245902,
+        "rouge1_p": 0.5789473684210527,
+        "rouge1_r": 0.10679611650485436,
+        "rouge2_f": 0.1,
+        "rouge2_p": 0.3333333333333333,
+        "rouge2_r": 0.058823529411764705,
+        "rougeL_f": 0.14754098360655737,
+        "rougeL_p": 0.47368421052631576,
+        "rougeL_r": 0.08737864077669903,
+        "bleu_score": 0.001996886772302352,
+        "semantic_similarity": 0.5864881873130798,
+        "overall_quality": 0.8057847548910754,
+        "quality_breakdown": {
+          "scores": [
+            0.9,
+            0.8571428571428572,
+            0.7960526315789473,
+            0.14754098360655737,
+            0.5864881873130798
+          ],
+          "weights": [
+            0.15,
+            0.25,
+            0.15,
+            0.1,
+            0.05
+          ],
+          "component_names": [
+            "coherence",
+            "relevance",
+            "fluency",
+            "rouge_similarity",
+            "semantic_similarity"
+          ]
+        }
+      },
+      "judge_evaluation": {
+        "quality_evaluation": {
+          "accuracy": 10,
+          "relevance": 10,
+          "completeness": 1,
+          "clarity": 10,
+          "context_use": 10,
+          "overall_score": 8.2,
+          "judge_model": "gpt-4",
+          "evaluation_type": "quality"
+        },
+        "factual_evaluation": {
+          "factual_accuracy_score": 10,
+          "has_hallucinations": false,
+          "unsupported_claims": [],
+          "incorrect_facts": [],
+          "explanation": "The response is accurate. It correctly states that the provided context does not contain any information about the European Convention on Human Rights or the ICCPR. There are no unsupported claims, incorrect facts, or hallucinations.",
+          "judge_model": "gpt-4",
+          "evaluation_type": "factual"
+        },
+        "legal_evaluation": {
+          "legal_accuracy": 10,
+          "human_rights_relevance": 10,
+          "legal_reasoning": 1,
+          "proper_citations": 1,
+          "overall_legal_quality": 5.5,
+          "legal_concepts_identified": [
+            "European Convention on Human Rights",
+            "ICCPR"
+          ],
+          "explanation": "The response accurately identifies the legal concepts in question - the European Convention on Human Rights and the ICCPR. It is also relevant to human rights law as it pertains to these two key instruments. However, it does not provide any legal reasoning or cite any relevant legal instruments or principles to explain how the two differ. The response essentially states that there is no information provided to answer the query, which does not address the query in a substantive way.",
+          "judge_model": "gpt-4",
+          "evaluation_type": "legal"
+        },
+        "comprehensive_score": 7.8999999999999995,
+        "judge_model": "gpt-4"
+      },
+      "overall_performance": 0.7093139019564301,
+      "expected_topics": [
+        "european convention",
+        "ICCPR",
+        "differences",
+        "comparison"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "query": "What remedies are available for human rights violations?",
+      "timestamp": 1751808432.0915008,
+      "processing_time": 1.700535774230957,
+      "rag_result": {
+        "query": "What remedies are available for human rights violations?",
+        "response": "Based on the provided context, there is not enough information to accurately answer the question about the remedies available for human rights violations. The context only briefly mentions human rights in different countries and the development of education programs, but does not specifically address remedies for human rights violations.",
+        "retrieved_docs": [
+          {
+            "content": "human rights in the United States of America and the development of education for\ninternational understanding in Japan, Finland and Lebanon. In Zimbabwe, new disciplines\nwere added to the curriculum t...",
+            "metadata": {
+              "chunk_size": 935,
+              "document_type": "human_rights_law",
+              "file_size": 5235645,
+              "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+              "file_name": "Recommendation-An-explainer-2024.pdf",
+              "document_category": "human_rights_law",
+              "upload_time": 1751634374.1323576,
+              "file_hash": "788a7b3e7b7801c28641ff6e13fdf974",
+              "total_chunks": 29,
+              "chunk_id": 9,
+              "uploaded_by": "streamlit_user"
+            }
+          },
+          {
+            "content": "activities within countries and to international initiatiev.s In the United Kingdom of Gerat\nBritain and Northern Ierlan,d for (cid:147)eoxramlWpd l(cid:31)p,eoSrt gruadmimee(cid:148)ss ewer launched\n...",
+            "metadata": {
+              "uploaded_by": "streamlit_user",
+              "document_category": "human_rights_law",
+              "file_size": 5235645,
+              "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+              "chunk_size": 934,
+              "total_chunks": 28,
+              "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+              "document_type": "human_rights_law",
+              "chunk_id": 7,
+              "upload_time": 1751642818.3591828,
+              "file_name": "Recommendation-An-explainer-2024.pdf",
+              "processing_time": 10.715944766998293
+            }
+          },
+          {
+            "content": "human rights in(cid:31)the(cid:31)United States of America and the deevlopment of education for\ninternational understanding in Japan,i nFland and eLbanon. In Zimbab,ew new disciplines\newer added to(ci...",
+            "metadata": {
+              "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+              "file_size": 5235645,
+              "document_category": "human_rights_law",
+              "file_name": "Recommendation-An-explainer-2024.pdf",
+              "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+              "total_chunks": 29,
+              "chunk_id": 9,
+              "processing_time": 59.7743456363678,
+              "uploaded_by": "streamlit_user",
+              "document_type": "human_rights_law",
+              "chunk_size": 980,
+              "upload_time": 1751644737.810968
+            }
+          }
+        ],
+        "database_used": "chroma",
+        "metadata": {
+          "retrieval_results": {
+            "query": "What remedies are available for human rights violations?",
+            "k": 5,
+            "chroma_results": [
+              {
+                "content": "(on.unesco.org/1974Recommendation)\n3\t\nSince 1974, the international community has adopted numerous legal instruments directly relevant to the Recommendation \non\u00a0education for peace, human rights and s...",
+                "score": 1.1710841655731201,
+                "metadata": {
+                  "total_chunks": 35,
+                  "chunk_id": 13,
+                  "uploaded_by": "streamlit_user",
+                  "document_category": "human_rights_law",
+                  "chunk_size": 597,
+                  "processing_time": 1.2596831321716309,
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645,
+                  "upload_time": 1751648069.3356304,
+                  "document_type": "human_rights_law"
+                }
+              },
+              {
+                "content": "relating to Human Rights and Fundamental Freedoms - Legal Affairs\n(on.unesco.org/1974Recommendation)\nHow was the 1974 Recommendation implemented\nBox 1\nwithin(cid:31)countries?\nThe pervious evrsion of ...",
+                "score": 1.1982932090759277,
+                "metadata": {
+                  "processing_time": 59.7743456363678,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "document_category": "human_rights_law",
+                  "upload_time": 1751644737.810968,
+                  "uploaded_by": "streamlit_user",
+                  "total_chunks": 29,
+                  "chunk_size": 955,
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_size": 5235645,
+                  "document_type": "human_rights_law",
+                  "chunk_id": 8,
+                  "file_name": "Recommendation-An-explainer-2024.pdf"
+                }
+              },
+              {
+                "content": "human rights in(cid:31)the(cid:31)United States of America and the deevlopment of education for\ninternational understanding in Japan,i nFland and eLbanon. In Zimbab,ew new disciplines\newer added to(ci...",
+                "score": 1.238929033279419,
+                "metadata": {
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_size": 5235645,
+                  "document_category": "human_rights_law",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 29,
+                  "chunk_id": 9,
+                  "processing_time": 59.7743456363678,
+                  "uploaded_by": "streamlit_user",
+                  "document_type": "human_rights_law",
+                  "chunk_size": 980,
+                  "upload_time": 1751644737.810968
+                }
+              },
+              {
+                "content": "activities within countries and to international initiatiev.s In the United Kingdom of Gerat\nBritain and Northern Ierlan,d for (cid:147)eoxramlWpd l(cid:31)p,eoSrt gruadmimee(cid:148)ss ewer launched\n...",
+                "score": 1.2439029216766357,
+                "metadata": {
+                  "uploaded_by": "streamlit_user",
+                  "document_category": "human_rights_law",
+                  "file_size": 5235645,
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "chunk_size": 934,
+                  "total_chunks": 28,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "document_type": "human_rights_law",
+                  "chunk_id": 7,
+                  "upload_time": 1751642818.3591828,
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "processing_time": 10.715944766998293
+                }
+              },
+              {
+                "content": "human rights in the United States of America and the development of education for\ninternational understanding in Japan, Finland and Lebanon. In Zimbabwe, new disciplines\nwere added to the curriculum t...",
+                "score": 1.244083285331726,
+                "metadata": {
+                  "chunk_size": 935,
+                  "document_type": "human_rights_law",
+                  "file_size": 5235645,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "document_category": "human_rights_law",
+                  "upload_time": 1751634374.1323576,
+                  "file_hash": "788a7b3e7b7801c28641ff6e13fdf974",
+                  "total_chunks": 29,
+                  "chunk_id": 9,
+                  "uploaded_by": "streamlit_user"
+                }
+              }
+            ],
+            "pinecone_results": [
+              {
+                "content": "(on.unesco.org/1974Recommendation)\n3\t\nSince 1974, the international community has adopted numerous legal instruments directly relevant to the Recommendation \non\u00a0education for peace, human rights and s...",
+                "score": 0.414150953,
+                "metadata": {
+                  "chunk_id": 13.0,
+                  "chunk_size": 597.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 1.2596831321716309,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 35.0,
+                  "upload_time": 1751648069.3356304,
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "relating to Human Rights and Fundamental Freedoms - Legal Affairs\n(on.unesco.org/1974Recommendation)\nHow was the 1974 Recommendation implemented\nBox 1\nwithin(cid:31)countries?\nThe pervious evrsion of ...",
+                "score": 0.400870532,
+                "metadata": {
+                  "chunk_id": 8.0,
+                  "chunk_size": 955.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 59.7743456363678,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 29.0,
+                  "upload_time": 1751644737.810968,
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "human rights in(cid:31)the(cid:31)United States of America and the deevlopment of education for\ninternational understanding in Japan,i nFland and eLbanon. In Zimbab,ew new disciplines\newer added to(ci...",
+                "score": 0.380310774,
+                "metadata": {
+                  "chunk_id": 9.0,
+                  "chunk_size": 980.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 59.7743456363678,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 29.0,
+                  "upload_time": 1751644737.810968,
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "international understanding in Japan, Finland and Lebanon. In Zimbabwe, new disciplines \nwere added to\u00a0the\u00a0curriculum to\u00a0promote education for\u00a0peace and\u00a0human rights.\u00a0\nThe UNESCO Recommendation on Edu...",
+                "score": 0.330844909,
+                "metadata": {
+                  "chunk_id": 11.0,
+                  "chunk_size": 959.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 1.2596831321716309,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 35.0,
+                  "upload_time": 1751648069.3356304,
+                  "uploaded_by": "streamlit_user"
+                }
+              },
+              {
+                "content": "The UNESCO Recommendation on Education for Peace, Human Rights and Sustainable Development \n9\nGuiding principles \nfor transformative education\nEducation policies, programmes and activities oriented to...",
+                "score": 0.318466932,
+                "metadata": {
+                  "chunk_id": 22.0,
+                  "chunk_size": 982.0,
+                  "document_category": "human_rights_law",
+                  "document_type": "human_rights_law",
+                  "file_hash": "1c8d72710314e9c8e421fbff33c70f31",
+                  "file_name": "Recommendation-An-explainer-2024.pdf",
+                  "file_size": 5235645.0,
+                  "processing_time": 1.2596831321716309,
+                  "source": "uploads\\Recommendation-An-explainer-2024.pdf",
+                  "total_chunks": 35.0,
+                  "upload_time": 1751648069.3356304,
+                  "uploaded_by": "streamlit_user"
+                }
+              }
+            ],
+            "comparison_metrics": {
+              "overlap_ratio": 0.6,
+              "jaccard_similarity": 0.42857142857142855,
+              "chroma_avg_score": 1.2192585229873658,
+              "pinecone_avg_score": 0.36892882
+            }
+          },
+          "num_docs_retrieved": 5,
+          "context_length": 649,
+          "num_docs_used": 3,
+          "model_used": "gpt-3.5-turbo",
+          "evaluation_metrics": {
+            "response_length": 339,
+            "context_utilization": 0.21568627450980393,
+            "query_relevance": 0.625
+          }
+        },
+        "error": null
+      },
+      "retrieval_metrics": {
+        "query": "What remedies are available for human rights violations?",
+        "num_retrieved": 3,
+        "num_relevant": 0,
+        "diversity_score": 0.7219891219891219
+      },
+      "generation_metrics": {
+        "generated_text_length": 339,
+        "query": "What remedies are available for human rights violations?",
+        "coherence_score": 1.0,
+        "relevance_score": 0.8999999999999999,
+        "fluency_score": 0.7525510204081632,
+        "rouge1_f": 0.288,
+        "rouge1_p": 0.3673469387755102,
+        "rouge1_r": 0.23684210526315788,
+        "rouge2_f": 0.11382113821138211,
+        "rouge2_p": 0.14583333333333334,
+        "rouge2_r": 0.09333333333333334,
+        "rougeL_f": 0.192,
+        "rougeL_p": 0.24489795918367346,
+        "rougeL_r": 0.15789473684210525,
+        "bleu_score": 0.039264587104898545,
+        "semantic_similarity": 0.7315413951873779,
+        "overall_quality": 0.8543224215752182,
+        "quality_breakdown": {
+          "scores": [
+            1.0,
+            0.8999999999999999,
+            0.7525510204081632,
+            0.192,
+            0.7315413951873779
+          ],
+          "weights": [
+            0.15,
+            0.25,
+            0.15,
+            0.1,
+            0.05
+          ],
+          "component_names": [
+            "coherence",
+            "relevance",
+            "fluency",
+            "rouge_similarity",
+            "semantic_similarity"
+          ]
+        }
+      },
+      "judge_evaluation": {
+        "quality_evaluation": {
+          "accuracy": 10,
+          "relevance": 8,
+          "completeness": 5,
+          "clarity": 10,
+          "context_use": 10,
+          "overall_score": 8.6,
+          "judge_model": "gpt-4",
+          "evaluation_type": "quality"
+        },
+        "factual_evaluation": {
+          "factual_accuracy_score": 5.0,
+          "has_hallucinations": true,
+          "unsupported_claims": [],
+          "incorrect_facts": [],
+          "explanation": "Could not parse detailed evaluation",
+          "judge_model": "gpt-4",
+          "evaluation_type": "factual"
+        },
+        "legal_evaluation": {
+          "legal_accuracy": 10,
+          "human_rights_relevance": 8,
+          "legal_reasoning": 10,
+          "proper_citations": 0,
+          "overall_legal_quality": 7,
+          "legal_concepts_identified": [
+            "Human Rights Violations"
+          ],
+          "explanation": "The response is legally accurate and demonstrates appropriate legal reasoning by acknowledging the lack of sufficient information to provide a comprehensive answer. However, it does not cite any relevant legal instruments or principles, which is a significant omission in a legal context. The relevance to human rights law is present but not fully explored due to the lack of specific information about remedies for human rights violations in the provided context.",
+          "judge_model": "gpt-4",
+          "evaluation_type": "legal"
+        },
+        "comprehensive_score": 6.866666666666667,
+        "judge_model": "gpt-4"
+      },
+      "overall_performance": 0.6977289686300873,
+      "expected_topics": [
+        "remedies",
+        "violations",
+        "legal recourse",
+        "compensation"
+      ],
+      "difficulty": "medium"
+    }
+  ],
+  "summary_metrics": {
+    "total_queries": 5,
+    "success_rate": 1.0,
+    "avg_overall_performance": 0.7117323665677298,
+    "avg_processing_time": 2.1593286991119385,
+    "performance_by_difficulty": {
+      "easy": 0.7557346090648318,
+      "medium": 0.6978711072724622,
+      "hard": 0.7093139019564301
+    },
+    "min_performance": 0.676286340182817,
+    "max_performance": 0.7557346090648318
+  },
+  "end_time": 1751808449.9196208,
+  "total_time": 88.9994728565216
+}

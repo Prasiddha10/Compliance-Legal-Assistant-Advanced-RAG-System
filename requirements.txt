@@ -1,0 +1,47 @@
+# Core LangChain and LangGraph dependencies
+langchain==0.3.0
+langchain-community==0.3.0
+langchain-core==0.3.0
+langgraph==0.2.0
+langsmith==0.1.96
+
+# Vector Databases
+pinecone-client==3.2.2
+chromadb==0.4.24
+
+# Embeddings
+sentence-transformers==3.0.1
+transformers==4.44.0
+torch==2.3.1
+
+# PDF Processing
+pypdf2==3.0.1
+pdfplumber==0.11.0
+unstructured==0.14.10
+
+# LLM APIs
+openai==1.35.15
+groq==0.9.0
+
+# Evaluation and Metrics
+ragas==0.1.11
+datasets==2.20.0
+rouge-score==0.1.2
+sacrebleu==2.4.2
+
+# Web Framework
+streamlit==1.37.0
+fastapi==0.112.0
+uvicorn==0.30.1
+
+# Utilities
+python-dotenv==1.0.1
+numpy==1.26.4
+pandas==2.2.2
+matplotlib==3.9.1
+seaborn==0.13.2
+plotly==5.22.0
+tqdm==4.66.4
+
+# File handling
+python-multipart==0.0.9
