@@ -10,6 +10,14 @@ A comprehensive Retrieval-Augmented Generation (RAG) system specifically designe
 - **Legal Document Processing**: Specialized PDF processing for human rights documents
 - **Intelligent Query Processing**: Natural language queries for legal information
 
+### Modern Web Interface
+- **Responsive Design**: Clean, modern UI that works on desktop and mobile
+- **Multi-language Support**: Query in English or Nepali with auto-detection
+- **Real-time Chat**: Interactive chat interface with typing indicators
+- **Document Upload**: Drag-and-drop PDF upload with progress tracking
+- **System Monitoring**: Real-time stats for database health and performance
+- **Source Citations**: Automatic article citations from Nepal Constitution
+
 ### Monitoring & Evaluation
 - **LangSmith Integration**: Real-time monitoring and tracing of all operations
 - **Comprehensive Evaluation**: Retrieval, generation, and end-to-end metrics
@@ -25,10 +33,16 @@ A comprehensive Retrieval-Augmented Generation (RAG) system specifically designe
 
 ```
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Streamlit UI  │    │    CLI Interface │    │  Jupyter Notebooks │
+│   Modern Web UI │    │    CLI Interface │    │  Jupyter Notebooks │
+│   (HTML/JS)     │    │                  │    │                 │
 └─────────┬───────┘    └─────────┬────────┘    └─────────┬─────────┘
           │                      │                       │
           └──────────────────────┼───────────────────────┘
+                                 │
+                    ┌─────────────┴──────────────┐
+                    │    FastAPI Backend         │
+                    │      (REST API)            │
+                    └─────────────┬──────────────┘
                                  │
                     ┌─────────────┴──────────────┐
                     │      RAG Pipeline          │
@@ -84,9 +98,21 @@ LANGCHAIN_PROJECT=rag-human-rights-evaluation
 
 ### 3. Run the Application
 
-#### Streamlit Web Interface (Recommended)
+#### Modern Web Interface (Recommended)
 ```bash
-streamlit run app.py
+# Option 1: Start directly with Python
+python backend.py
+
+# Option 2: Use startup scripts
+.\start_backend.bat   # Windows Command Prompt
+.\start_backend.ps1   # Windows PowerShell
+./start_backend.sh    # Linux/Mac
+
+# Option 3: Use virtual environment directly
+.\.venv\Scripts\python.exe backend.py  # Windows
+./.venv/bin/python backend.py          # Linux/Mac
+
+# Open your browser to http://localhost:8000
 ```
 
 #### Command Line Interface
@@ -334,6 +360,24 @@ print(f'Performance: {result[\"overall_performance\"]:.3f}')
 ## 🛠️ Troubleshooting
 
 ### Common Issues
+
+#### Frontend Startup Issues
+```bash
+# PowerShell execution policy error
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+# Script not found error (use proper syntax)
+.\start_backend.bat   # Windows Command Prompt
+.\start_backend.ps1   # Windows PowerShell
+
+# Python path issues
+.\.venv\Scripts\python.exe backend.py  # Windows
+./.venv/bin/python backend.py          # Linux/Mac
+
+# Port already in use
+netstat -ano | findstr :8000  # Windows
+lsof -i :8000                 # Linux/Mac
+```
 
 #### API Key Errors
 ```bash

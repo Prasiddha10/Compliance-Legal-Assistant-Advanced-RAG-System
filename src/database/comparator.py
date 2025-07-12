@@ -82,7 +82,7 @@ class DatabaseComparator:
                 chroma_docs = self.chroma_db.similarity_search_with_score(query, k)
                 results["chroma_results"] = [
                     {
-                        "content": doc.page_content[:200] + "...",
+                        "content": doc.page_content,
                         "score": score,
                         "metadata": doc.metadata
                     }
@@ -97,7 +97,7 @@ class DatabaseComparator:
                 pinecone_docs = self.pinecone_db.similarity_search_with_score(query, k)
                 results["pinecone_results"] = [
                     {
-                        "content": doc.page_content[:200] + "...",
+                        "content": doc.page_content,
                         "score": score,
                         "metadata": doc.metadata
                     }

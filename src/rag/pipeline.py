@@ -10,6 +10,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from src.database.comparator import DatabaseComparator
 from src.rag.llm_manager import LLMManager
 from src.utils.pdf_processor import PDFProcessor
+from src.utils.language_utils import LanguageProcessor
 import json
 
 logger = logging.getLogger(__name__)
@@ -24,6 +25,8 @@ class RAGState(TypedDict):
     database_used: str
     retrieval_scores: List[float]
     error: Optional[str]
+    language: str
+    detected_language: str
 
 class RAGPipeline:
     """RAG pipeline using LangGraph for workflow orchestration."""
@@ -33,6 +36,7 @@ class RAGPipeline:
         self.db_comparator = database_comparator or DatabaseComparator()
         self.llm_manager = llm_manager or LLMManager()
         self.pdf_processor = PDFProcessor()
+        self.language_processor = LanguageProcessor()
         
         # Initialize the workflow graph
         self.workflow = self._create_workflow()
@@ -43,7 +47,7 @@ class RAGPipeline:
         # Create the compiled graph
         self.app = self.workflow.compile(checkpointer=self.memory)
         
-        logger.info("RAG Pipeline initialized with LangGraph")
+        logger.info("RAG Pipeline initialized with LangGraph and language processing")
     
     def _create_workflow(self) -> StateGraph:
         """Create the LangGraph workflow for RAG."""
@@ -72,14 +76,17 @@ class RAGPipeline:
         
         try:
             # Compare results from both databases
-            comparison_results = self.db_comparator.compare_search_results(query, k=5)
+            comparison_results = self.db_comparator.compare_search_results(query, k=10)  # Get more docs
             
             # Use ChromaDB results as primary, fallback to Pinecone
             if "chroma_results" in comparison_results and comparison_results["chroma_results"]:
                 retrieved_docs = []
                 scores = []
                 
-                for result in comparison_results["chroma_results"]:
+                # Apply constitution priority boost
+                boosted_results = self._apply_constitution_priority(comparison_results["chroma_results"], query)
+                
+                for result in boosted_results[:5]:  # Take top 5 after boosting
                     doc = Document(
                         page_content=result["content"],
                         metadata=result.get("metadata", {})
@@ -93,7 +100,10 @@ class RAGPipeline:
                 retrieved_docs = []
                 scores = []
                 
-                for result in comparison_results["pinecone_results"]:
+                # Apply constitution priority boost
+                boosted_results = self._apply_constitution_priority(comparison_results["pinecone_results"], query)
+                
+                for result in boosted_results[:5]:  # Take top 5 after boosting
                     doc = Document(
                         page_content=result["content"],
                         metadata=result.get("metadata", {})
@@ -131,6 +141,51 @@ class RAGPipeline:
         
         return state
     
+    def _apply_constitution_priority(self, results, query):
+        """Apply priority boost to Nepal Constitution documents for constitutional queries."""
+        
+        # Constitutional query keywords
+        constitutional_keywords = [
+            'constitution', 'fundamental rights', 'official language', 'equality',
+            'article', 'constitutional', 'nepal', 'rights', 'freedom', 'justice',
+            'democracy', 'citizen', 'constitutional law', 'constitutional provision',
+            'human rights', 'legal rights', 'basic rights', 'civil rights',
+            'मौलिक अधिकार', 'संविधान', 'राष्ट्रभाषा', 'समानता', 'अधिकार',
+            'धारा', 'नेपाल', 'स्वतन्त्रता', 'न्याय', 'लोकतन्त्र', 'नागरिक'
+        ]
+        
+        # Check if query is constitutional
+        is_constitutional_query = any(keyword.lower() in query.lower() for keyword in constitutional_keywords)
+        
+        if not is_constitutional_query:
+            return results
+        
+        # Separate constitution and other documents
+        constitution_docs = []
+        other_docs = []
+        
+        for result in results:
+            source = result.get("metadata", {}).get("source", "")
+            if "Nepal_Constitution" in source or "Nepal Constitution" in source:
+                constitution_docs.append(result)
+            else:
+                other_docs.append(result)
+        
+        # Apply very strong boost to constitution documents
+        for doc in constitution_docs:
+            original_score = doc.get("score", 0.0)
+            # Very strong boost - multiply by 0.5 to make it much more relevant
+            doc["score"] = original_score * 0.5
+            doc["boosted"] = True
+        
+        # Combine with constitution docs first
+        boosted_results = constitution_docs + other_docs
+        
+        # Sort by boosted scores (lower is better)
+        boosted_results.sort(key=lambda x: x.get("score", float('inf')))
+        
+        return boosted_results
+    
     def _rerank_documents(self, state: RAGState) -> RAGState:
         """Rerank documents based on relevance to query."""
         try:
@@ -156,10 +211,13 @@ class RAGPipeline:
         return state
     
     def _generate_response(self, state: RAGState) -> RAGState:
-        """Generate response using LLM with retrieved context."""
+        """Generate response using LLM with retrieved context and language support."""
         try:
             retrieved_docs = state["retrieved_docs"]
             query = state["query"]
+            model_name = state.get("metadata", {}).get("model_name", "gpt-3.5-turbo")
+            detected_language = state.get("detected_language", "en")
+            language_prompts = state.get("metadata", {}).get("language_prompts", {})
             
             # Create context from retrieved documents
             if retrieved_docs:
@@ -174,40 +232,91 @@ class RAGPipeline:
             
             state["context"] = context
             
-            # Create the prompt
-            prompt_template = PromptTemplate(
-                input_variables=["context", "question"],
-                template="""You are an expert legal assistant specializing in human rights law. 
-                Use the following context from human rights documents to answer the question.
-                Provide accurate, detailed responses based only on the provided context.
-                If the context doesn't contain enough information, clearly state that.
-                
-                Context:
-                {context}
-                
-                Question: {question}
-                
-                Answer:"""
-            )
+            # Use language-specific prompt if available
+            if language_prompts and 'system_prompt' in language_prompts:
+                system_prompt = language_prompts['system_prompt']
+            else:
+                system_prompt = """You are an expert legal assistant specializing in human rights law and international legal documents."""
             
-            # Get LLM and generate response
-            llm = self.llm_manager.get_model()
+            # Create the language-aware prompt template
+            if detected_language == 'ne':
+                prompt_template = PromptTemplate(
+                    input_variables=["context", "question"],
+                    template=f"""{system_prompt}
+
+निम्नलिखित मानवअधिकार र कानूनी कागजातहरूको सन्दर्भ प्रयोग गरेर प्रश्नको उत्तर दिनुहोस्।
+
+निर्देशनहरू:
+- प्रदान गरिएको सन्दर्भको आधारमा सटीक, विस्तृत उत्तर दिनुहोस्
+- यदि सन्दर्भमा सान्दर्भिक कानूनी प्रावधानहरू छन् भने, विशिष्ट धारा वा खण्ड संख्याहरू उद्धृत गर्नुहोस्
+- यदि सन्दर्भमा पर्याप्त जानकारी छैन भने, उपलब्ध जानकारी प्रदान गर्नुहोस् र के छुटेको छ भनी स्पष्ट रूपमा भन्नुहोस्
+- अन्तर्राष्ट्रिय मानवअधिकार कानून, संवैधानिक कानून र कानूनी सिद्धान्तहरूमा केन्द्रित हुनुहोस्
+- कानूनी सटीकता कायम राख्दै स्पष्ट, सुलभ भाषा प्रयोग गर्नुहोस्
+
+सन्दर्भ:
+{{context}}
+
+प्रश्न: {{question}}
+
+उत्तर:"""
+                )
+            else:
+                prompt_template = PromptTemplate(
+                    input_variables=["context", "question"],
+                    template=f"""{system_prompt}
+
+Use the following context from human rights and legal documents to answer the question.
+
+Instructions:
+- Provide accurate, detailed responses based on the provided context
+- If the context contains relevant legal provisions, cite the specific article or section numbers when possible
+- If the context doesn't contain enough information, provide what information is available and clearly state what is missing
+- Focus on international human rights law, constitutional law, and legal principles
+- Use clear, accessible language while maintaining legal accuracy
+
+Context:
+{{context}}
+
+Question: {{question}}
+
+Answer:"""
+                )
+            
+            # Get LLM with specified model and generate response
+            llm = self.llm_manager.get_model(model_name)
             
             # Generate response based on LLM type
-            if hasattr(llm, 'invoke'):
-                # For newer LangChain ChatModels
-                prompt = prompt_template.format(context=context, question=query)
-                response = llm.invoke(prompt)
-                response_text = response.content if hasattr(response, 'content') else str(response)
-            elif callable(llm):
-                # For direct callable LLM
-                prompt = prompt_template.format(context=context, question=query)
-                response_text = llm(prompt)
-            else:
-                # Fallback
-                response_text = "Error: Could not generate response - LLM not available"
+            try:
+                if hasattr(llm, 'invoke'):
+                    # For newer LangChain ChatModels
+                    prompt = prompt_template.format(context=context, question=query)
+                    response = llm.invoke(prompt)
+                    response_text = response.content if hasattr(response, 'content') else str(response)
+                elif callable(llm):
+                    # For direct callable LLM
+                    prompt = prompt_template.format(context=context, question=query)
+                    response_text = llm(prompt)
+                else:
+                    # Fallback
+                    response_text = "Error: Could not generate response - LLM not available"
+                    state["error"] = "LLM not available"
+                
+                # Check if response contains an error
+                if "Error generating response:" in str(response_text) or "Error code:" in str(response_text):
+                    state["error"] = str(response_text)
+                    response_text = f"Sorry, I encountered an error while generating the response. The model '{model_name}' may be temporarily unavailable. Please try a different model."
+                    
+            except Exception as e:
+                logger.error(f"Error generating response with {model_name}: {e}")
+                state["error"] = str(e)
+                response_text = f"Error generating response: {str(e)}"
             
-            state["response"] = str(response_text)
+            # Format response with language-specific formatting
+            formatted_response = self.language_processor.format_response(
+                str(response_text), detected_language, []
+            )
+            
+            state["response"] = formatted_response
             
             # Update metadata
             if "metadata" not in state or state["metadata"] is None:
@@ -216,7 +325,7 @@ class RAGPipeline:
             state["metadata"].update({
                 "context_length": len(context),
                 "num_docs_used": len(retrieved_docs[:3]),
-                "model_used": self.llm_manager.list_available_models()[0] if self.llm_manager.list_available_models() else "unknown"
+                "model_used": model_name
             })
             
             logger.info("Generated response using LLM")
@@ -273,19 +382,29 @@ class RAGPipeline:
         
         return state
     
-    def query(self, question: str, thread_id: str = "default") -> Dict[str, Any]:
-        """Process a query through the RAG pipeline."""
+    def query(self, question: str, thread_id: str = "default", model_name: str = "gpt-3.5-turbo", language: str = "auto") -> Dict[str, Any]:
+        """Process a query through the RAG pipeline with language support."""
         try:
+            # Process language detection
+            detected_language, language_prompts = self.language_processor.process_query(question, language)
+            
             # Initial state with proper type checking
             initial_state: RAGState = {
                 "query": question,
                 "retrieved_docs": [],
                 "context": "",
                 "response": "",
-                "metadata": {},
+                "metadata": {
+                    "model_name": model_name,
+                    "language": language,
+                    "detected_language": detected_language,
+                    "language_prompts": language_prompts
+                },
                 "database_used": "",
                 "retrieval_scores": [],
-                "error": None
+                "error": None,
+                "language": language,
+                "detected_language": detected_language
             }
             
             # Run the workflow with proper config

@@ -26,6 +26,7 @@ class Config:
     PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
     PINECONE_ENVIRONMENT = os.getenv("PINECONE_ENVIRONMENT", "gcp-starter")
     LANGCHAIN_API_KEY = os.getenv("LANGCHAIN_API_KEY")
+    GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
     
     # LangSmith Configuration
     LANGCHAIN_TRACING_V2 = os.getenv("LANGCHAIN_TRACING_V2", "true")

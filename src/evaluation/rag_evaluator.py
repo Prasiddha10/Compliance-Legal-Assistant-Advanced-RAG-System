@@ -93,6 +93,43 @@ class RAGEvaluationSuite:
         
         return evaluation
     
+    def evaluate_response(self, query: str, response: str, context: str = "", 
+                         reference_answer: Optional[str] = None, 
+                         ground_truth_docs: Optional[List] = None) -> Dict[str, Any]:
+        """Evaluate a pre-generated response without re-querying the RAG pipeline."""
+        
+        # Initialize evaluation result
+        evaluation = {
+            "query": query,
+            "timestamp": time.time(),
+            "processing_time": 0.0,  # Not applicable for pre-generated responses
+            "rag_result": {
+                "response": response,
+                "context": context,
+                "retrieved_docs": []
+            }
+        }
+        
+        # Generation evaluation
+        if response:
+            generation_metrics = self.generation_evaluator.evaluate_generation_quality(
+                response, query, context, reference_answer
+            )
+            evaluation["generation_metrics"] = generation_metrics
+            
+            # LLM Judge evaluation
+            judge_evaluation = self.llm_judge.comprehensive_evaluation(
+                query, context, response
+            )
+            evaluation["judge_evaluation"] = judge_evaluation
+        
+        # Overall performance score
+        evaluation["overall_performance"] = self._calculate_overall_performance(evaluation)
+        
+        logger.info(f"Evaluated response for query: {query[:50]}... Score: {evaluation['overall_performance']:.2f}")
+        
+        return evaluation
+    
     def run_benchmark_evaluation(self, save_results: bool = True) -> Dict[str, Any]:
         """Run benchmark evaluation on predefined test queries."""
         logger.info("Starting benchmark evaluation...")

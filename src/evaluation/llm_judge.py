@@ -36,11 +36,25 @@ class LLMJudge:
             
             Please evaluate the response on the following criteria (score 1-10):
             
-            1. ACCURACY: How factually correct is the response based on the context?
+            1. ACCURACY: How factually correct AND informative is the response?
+               CRITICAL: Responses that say "no information available" or defer without providing 
+               legal knowledge should score 3-4 maximum, even if technically accurate.
             2. RELEVANCE: How well does the response address the specific query?
-            3. COMPLETENESS: How thoroughly does the response answer the question?
+            3. COMPLETENESS: How thoroughly does the response answer the question? 
+               CRITICAL: If the response says "not enough information", "I don't know", or avoids 
+               providing substantive legal information, score 1-2. Legal assistants must provide 
+               knowledgeable answers, not defer to external sources.
             4. CLARITY: How clear and well-structured is the response?
             5. CONTEXT_USE: How well does the response utilize the provided context?
+               CRITICAL: Responses that only cite context limitations without providing legal 
+               knowledge should score 1-3. Good responses blend context with domain expertise.
+            
+            STRICT SCORING GUIDELINES:
+            - Score 1-2: Non-answers, "I don't know", or responses that avoid providing information
+            - Score 3-4: Minimal information with heavy reliance on disclaimers
+            - Score 5-6: Basic but incomplete legal information
+            - Score 7-8: Substantial, accurate legal information with proper reasoning
+            - Score 9-10: Comprehensive, expert-level legal knowledge and analysis
             
             Provide your evaluation in the following JSON format:
             {{
@@ -57,18 +71,28 @@ class LLMJudge:
         factual_prompt = PromptTemplate(
             input_variables=["context", "response"],
             template="""You are an expert fact-checker for legal documents.
-            Evaluate whether the following response contains any factual errors or hallucinations
-            compared to the provided context.
+            Evaluate the factual quality of the response considering both accuracy AND informativeness.
             
             Context: {context}
             
             Response: {response}
             
-            Check for:
-            1. Claims made in the response that are not supported by the context
-            2. Incorrect legal references or citations
-            3. Misstatements of law or facts
-            4. Hallucinated information
+            STEP 1: Check if the response says "no information available", "context doesn't contain", 
+            or defers to external sources. If YES, you MUST score 3-4 maximum.
+            
+            STEP 2: Evaluate based on these criteria:
+            1. Factual Accuracy: Check for hallucinations, incorrect claims, or unsupported statements
+            2. Informativeness: Assess whether the response provides substantive, useful information
+            3. Knowledge Application: Whether the response demonstrates understanding beyond just the context
+            
+            SCORING RULES (follow strictly):
+            - If response claims "no information" or defers → Score 3-4 ONLY
+            - Score 8-10: Factually accurate AND provides substantial, useful information
+            - Score 5-7: Factually accurate with moderate informational value
+            - Score 3-4: Accurate but non-informative (e.g., "I don't know", "no information available")
+            - Score 1-2: Contains factual errors or hallucinations
+            
+            Remember: Legal AI assistants should provide knowledge, not just acknowledge ignorance.
             
             Provide your evaluation in JSON format:
             {{
@@ -94,6 +118,20 @@ class LLMJudge:
             2. Relevance to human rights law
             3. Appropriate legal reasoning
             4. Citation of relevant legal instruments or principles
+            
+            CRITICAL EVALUATION STANDARDS:
+            - Responses saying "not enough information" or "I don't know" for well-established 
+              legal concepts should score 1-2 (completely inadequate)
+            - Legal assistants are expected to know basic legal principles and mechanisms
+            - Avoid rewarding responses that defer responsibility without providing knowledge
+            - A good legal response should mention relevant courts, laws, or procedures
+            
+            STRICT SCORING GUIDELINES:
+            - Score 1-2: Completely inadequate, avoids legal knowledge, non-substantive
+            - Score 3-4: Minimal legal content, mostly disclaimers and deferrals  
+            - Score 5-6: Basic legal understanding with some relevant information
+            - Score 7-8: Good legal knowledge with proper reasoning and citations
+            - Score 9-10: Expert-level legal analysis with comprehensive understanding
             
             Provide evaluation in JSON format:
             {{

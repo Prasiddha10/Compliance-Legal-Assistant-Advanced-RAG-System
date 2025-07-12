@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human Rights Legal Assistant - Nepal Constitution</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="/static/css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Initializing Legal Assistant...</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-balance-scale"></i>
+                <span>Human Rights Legal Assistant</span>
+            </div>
+            <nav class="nav">
+                <button class="nav-btn" onclick="showTab('chat')">
+                    <i class="fas fa-comments"></i> Chat
+                </button>
+                <button class="nav-btn" onclick="showTab('upload')">
+                    <i class="fas fa-upload"></i> Upload
+                </button>
+                <button class="nav-btn" onclick="showTab('evaluate')">
+                    <i class="fas fa-chart-line"></i> Evaluate
+                </button>
+                <button class="nav-btn" onclick="showTab('stats')">
+                    <i class="fas fa-info-circle"></i> Stats
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Chat Tab -->
+            <div id="chat-tab" class="tab active">
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <h2><i class="fas fa-robot"></i> Human Rights Legal Assistant</h2>
+                        <p>Ask questions about human rights documents and legal information</p>
+                    </div>
+                    
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message bot-message">
+                            <div class="message-content">
+                                <div class="message-text">
+                                    <p>⚖️ Welcome to the Human Rights Legal Assistant!</p>
+                                    <p>I can help you find information about human rights documents and legal principles. Ask me questions and I'll provide accurate answers with source citations.</p>
+                                    <p><strong>Example queries:</strong></p>
+                                    <ul>
+                                        <li>"What are the fundamental human rights?"</li>
+                                        <li>"What does Article 19 of the UDHR say about freedom of expression?"</li>
+                                        <li>"What are the key principles of international human rights law?"</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-container">
+                        <div class="input-group">
+                            <input type="text" id="query-input" placeholder="Ask about human rights and legal documents..." autocomplete="off">
+                            <button id="send-btn" onclick="sendQuery()">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <div class="input-options">
+                            <div class="model-selection">
+                                <label for="model-select">AI Model:</label>
+                                <select id="model-select">
+                                    <option value="gpt-3.5-turbo">OpenAI GPT-3.5 Turbo</option>
+                                    <option value="gpt-4">OpenAI GPT-4</option>
+                                    <option value="llama-3.1-8b-instant">Groq Llama 3.1 8B</option>
+                                    <option value="mixtral-8x7b-32768">Groq Mixtral 8x7B</option>
+                                    <option value="gemma2-9b-it">Groq Gemma2 9B</option>
+                                    <option value="gemini-1.5-flash">Google Gemini 1.5 Flash</option>
+                                    <option value="gemini-1.5-pro">Google Gemini 1.5 Pro</option>
+                                </select>
+                            </div>
+                            <div class="language-selection">
+                                <label for="language-select">Language:</label>
+                                <select id="language-select">
+                                    <option value="auto">Auto-detect</option>
+                                    <option value="en">English</option>
+                                    <option value="ne">Nepali</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload Tab -->
+            <div id="upload-tab" class="tab">
+                <div class="upload-container">
+                    <div class="upload-header">
+                        <h2><i class="fas fa-cloud-upload-alt"></i> Document Upload</h2>
+                        <p>Upload legal documents to expand the knowledge base</p>
+                    </div>
+                    
+                    <div class="upload-area" id="upload-area">
+                        <div class="upload-content">
+                            <i class="fas fa-file-pdf upload-icon"></i>
+                            <p>Drag and drop PDF files here or click to select</p>
+                            <input type="file" id="file-input" accept=".pdf" multiple style="display: none;">
+                            <button class="upload-btn" onclick="document.getElementById('file-input').click()">
+                                Select Files
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="upload-progress" id="upload-progress" style="display: none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <p id="upload-status">Uploading...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Evaluate Tab -->
+            <div id="evaluate-tab" class="tab">
+                <div class="evaluate-container">
+                    <div class="evaluate-header">
+                        <h2><i class="fas fa-chart-line"></i> System Evaluation</h2>
+                        <p>Test the system's performance with sample queries</p>
+                    </div>
+                    
+                    <div class="evaluate-content">
+                        <div class="query-list">
+                            <h3>Test Queries</h3>
+                            <div class="query-inputs">
+                                <div class="query-input-group">
+                                    <input type="text" class="eval-query" placeholder="Enter test query..." value="What is the official language of Nepal?">
+                                    <button onclick="removeQuery(this)"><i class="fas fa-trash"></i></button>
+                                </div>
+                                <div class="query-input-group">
+                                    <input type="text" class="eval-query" placeholder="Enter test query..." value="नेपालको राजकीय भाषा के हो?">
+                                    <button onclick="removeQuery(this)"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                            <button class="add-query-btn" onclick="addQuery()">
+                                <i class="fas fa-plus"></i> Add Query
+                            </button>
+                        </div>
+                        
+                        <div class="evaluate-actions">
+                            <button class="evaluate-btn" onclick="runEvaluation()">
+                                <i class="fas fa-play"></i> Run Evaluation
+                            </button>
+                            <div class="evaluate-options">
+                                <label>
+                                    <input type="checkbox" id="detailed-metrics" checked>
+                                    Include detailed metrics
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="evaluation-results" id="evaluation-results" style="display: none;">
+                            <h3>Evaluation Results</h3>
+                            <div class="results-summary" id="results-summary"></div>
+                            <div class="results-details" id="results-details"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Tab -->
+            <div id="stats-tab" class="tab">
+                <div class="stats-container">
+                    <div class="stats-header">
+                        <h2><i class="fas fa-info-circle"></i> System Statistics</h2>
+                        <p>Monitor system health and database status</p>
+                    </div>
+                    
+                    <div class="stats-grid" id="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>System Status</h3>
+                                <p id="system-status">Loading...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>ChromaDB</h3>
+                                <p id="chroma-status">Loading...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Pinecone DB</h3>
+                                <p id="pinecone-status">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="refresh-stats">
+                        <button onclick="refreshStats()">
+                            <i class="fas fa-sync-alt"></i> Refresh Stats
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Human Rights Legal Assistant. Built for Nepal Constitution queries.</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

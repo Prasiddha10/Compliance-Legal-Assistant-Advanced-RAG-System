@@ -197,6 +197,19 @@ class GenerationEvaluator:
         gen_text_lower = generated_text.lower()
         query_lower = query.lower()
         
+        # CRITICAL: Check for non-substantive responses first
+        non_substantive_phrases = [
+            "no information", "not enough information", "i don't know", "i cannot provide",
+            "context does not contain", "context doesn't contain", "no specific information",
+            "not available", "cannot provide an accurate", "cannot provide a detailed",
+            "seek legal advice", "consult legal experts", "refer to specific", "important to refer"
+        ]
+        
+        # Apply severe penalty for non-substantive responses
+        for phrase in non_substantive_phrases:
+            if phrase in gen_text_lower:
+                return 0.1  # Maximum 0.1 relevance for non-substantive responses
+        
         # 1. Exact keyword overlap
         gen_words = set(gen_text_lower.split())
         query_words = set(query_lower.split())
@@ -243,7 +256,11 @@ class GenerationEvaluator:
             'violation': ['breach', 'infringement', 'abuse'],
             'obligation': ['duty', 'responsibility', 'requirement'],
             'refugee': ['asylum', 'displaced', 'migrant'],
-            'state': ['government', 'nation', 'country', 'authority']
+            'state': ['government', 'nation', 'country', 'authority'],
+            'kill': ['murder', 'homicide', 'killing', 'manslaughter', 'death', 'criminal'],
+            'someone': ['person', 'individual', 'victim', 'human'],
+            'punishment': ['penalty', 'sentence', 'imprisonment', 'consequences', 'sanctions'],
+            'legal': ['law', 'court', 'criminal', 'prosecution', 'charges', 'justice']
         }
         
         concept_matches = 0
@@ -427,6 +444,20 @@ class GenerationEvaluator:
         # Apply bonuses for good performance
         if overall_score > 0.7:
             overall_score = min(1.0, float(overall_score) * 1.1)  # 10% bonus for high scores
+        
+        # CRITICAL: Apply penalty for non-substantive responses
+        gen_text_lower = generated_text.lower()
+        non_substantive_phrases = [
+            "no information", "not enough information", "i don't know", "i cannot provide",
+            "context does not contain", "context doesn't contain", "no specific information",
+            "not available", "cannot provide an accurate", "cannot provide a detailed",
+            "seek legal advice", "consult legal experts", "refer to specific", "important to refer"
+        ]
+        
+        for phrase in non_substantive_phrases:
+            if phrase in gen_text_lower:
+                overall_score = min(overall_score, 0.3)  # Cap at 0.3 for non-substantive responses
+                break
         
         metrics["overall_quality"] = max(0.0, min(1.0, float(overall_score)))
         

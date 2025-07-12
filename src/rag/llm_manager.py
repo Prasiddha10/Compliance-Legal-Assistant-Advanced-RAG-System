@@ -8,6 +8,14 @@ from langchain_openai import ChatOpenAI
 from src.config import Config
 import logging
 
+# Try to import Google Generative AI
+try:
+    import google.generativeai as genai
+    from langchain_google_genai import ChatGoogleGenerativeAI
+    GOOGLE_AI_AVAILABLE = True
+except ImportError:
+    GOOGLE_AI_AVAILABLE = False
+
 logger = logging.getLogger(__name__)
 
 class GroqLLM(LLM):
@@ -90,14 +98,22 @@ class LLMManager:
         # Groq models
         if Config.GROQ_API_KEY:
             try:
-                self.models["mixtral-8x7b"] = GroqLLM(
+                # Using currently available Groq models
+                self.models["llama-3.1-8b-instant"] = GroqLLM(
+                    model_name="llama-3.1-8b-instant",
+                    temperature=0.1,
+                    max_tokens=1024
+                )
+                
+                # Add other available models
+                self.models["mixtral-8x7b-32768"] = GroqLLM(
                     model_name="mixtral-8x7b-32768",
                     temperature=0.1,
                     max_tokens=1024
                 )
                 
-                self.models["llama2-70b"] = GroqLLM(
-                    model_name="llama2-70b-4096",
+                self.models["gemma2-9b-it"] = GroqLLM(
+                    model_name="gemma2-9b-it",
                     temperature=0.1,
                     max_tokens=1024
                 )
@@ -106,6 +122,33 @@ class LLMManager:
                 
             except Exception as e:
                 logger.warning(f"Could not initialize Groq models: {e}")
+        
+        # Google Gemini models
+        if GOOGLE_AI_AVAILABLE and Config.GOOGLE_API_KEY:
+            try:
+                # Use the current supported Gemini model
+                from pydantic import SecretStr
+
+                self.models["gemini-1.5-flash"] = ChatGoogleGenerativeAI(
+                    model="gemini-1.5-flash",
+                    temperature=0.1,
+                    api_key=SecretStr(Config.GOOGLE_API_KEY)
+                )
+                # Also add the pro version if available
+                self.models["gemini-1.5-pro"] = ChatGoogleGenerativeAI(
+                    model="gemini-1.5-pro",
+                    temperature=0.1,
+                    api_key=SecretStr(Config.GOOGLE_API_KEY)
+                )
+                logger.info("Google Gemini models initialized")
+                
+            except Exception as e:
+                logger.warning(f"Could not initialize Google Gemini models: {e}")
+        
+        if not self.models:
+            logger.warning("No LLM models initialized. Please check your API keys.")
+        else:
+            logger.info(f"Initialized {len(self.models)} LLM models: {list(self.models.keys())}")
     
     def get_model(self, model_name: Optional[str] = None):
         """Get a specific model or default model."""
