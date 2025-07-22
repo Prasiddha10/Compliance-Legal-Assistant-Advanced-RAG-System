@@ -45,7 +45,7 @@ A sophisticated Retrieval-Augmented Generation (RAG) system specifically designe
 ### System Performance Metrics
 - **Retrieval Accuracy**: 93-95% relevance scores (excellent performance)
 - **Overall System Score**: 90% average across all evaluation components
-- **Generation Quality**: 80-91% coherence and factual accuracy
+- **Generation Quality**: 84-91% coherence and factual accuracy
 - **Judge Evaluation**: 80-85% comprehensive legal relevance assessment
 - **Response Time**: <2 seconds average for complex compliance queries
 - **System Reliability**: 99.9% uptime with robust error handling
@@ -84,14 +84,14 @@ A sophisticated Retrieval-Augmented Generation (RAG) system specifically designe
 ### Core Technology Stack
 
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
 │   Web Frontend  │    │  FastAPI Backend │    │ LangGraph Pipeline│
-│                 │◄──►│                 │◄──►│                    │
-│ • HTML/CSS/JS   │    │ • REST APIs     │    │ • State Management│
-│ • Real-time UI  │    │ • CORS Support  │    │ • Workflow Nodes │
-│ • File Upload   │    │ • Error Handling│    │ • Memory Saver  │
-│ • Evaluation    │    │ • Async Support │    │ • Type Safety   │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
+│                 │◄──►│                  │◄──►│                    │
+│ • HTML/CSS/JS   │    │ • REST APIs      │    │ • State Management│
+│ • Real-time UI  │    │ • CORS Support   │    │ • Workflow Nodes │
+│ • File Upload   │    │ • Error Handling │    │ • Memory Saver  │
+│ • Evaluation    │    │ • Async Support  │    │ • Type Safety   │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
                                 │
                                 ▼
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
