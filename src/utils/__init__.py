@@ -1,10 +1,8 @@
 """Utility functions package."""
-from .pdf_processor import PDFProcessor, TextProcessor
-from .embeddings import SentenceTransformerEmbeddings, EmbeddingUtils
+from .document_processor import DocumentProcessor
+from .embeddings import SentenceTransformerEmbeddings
 
 __all__ = [
-    "PDFProcessor",
-    "TextProcessor", 
-    "SentenceTransformerEmbeddings",
-    "EmbeddingUtils"
+    "DocumentProcessor",
+    "SentenceTransformerEmbeddings"
 ]

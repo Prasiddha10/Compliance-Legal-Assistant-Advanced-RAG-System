@@ -130,6 +130,9 @@ class RetrievalEvaluator:
         
         # If we have retrieval scores
         if retrieval_scores:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.info(f"Retrieval scores for query '{query[:50]}...': {retrieval_scores}")
             metrics["avg_score"] = np.mean(retrieval_scores)
             metrics["max_score"] = np.max(retrieval_scores)
             metrics["min_score"] = np.min(retrieval_scores)
@@ -182,37 +185,37 @@ class RetrievalBenchmark:
         self.test_queries = self._create_test_queries()
     
     def _create_test_queries(self) -> List[Dict[str, Any]]:
-        """Create test queries for human rights domain."""
+        """Create test queries for compliance domain."""
         return [
             {
-                "query": "What are the fundamental human rights according to the Universal Declaration?",
-                "expected_topics": ["universal declaration", "fundamental rights", "human rights"],
+                "query": "What are the fundamental compliance requirements according to international standards?",
+                "expected_topics": ["international standards", "fundamental requirements", "compliance"],
                 "difficulty": "easy",
-                "reference_answer": "The Universal Declaration of Human Rights establishes fundamental human rights including the right to life, liberty, and security of person; freedom from slavery and torture; equality before the law; fair trial rights; freedom of thought, conscience, and religion; freedom of expression and assembly; and rights to education, work, and adequate standard of living. These rights are inherent to all human beings regardless of race, sex, nationality, ethnicity, language, religion, or other status."
+                "reference_answer": "International compliance standards establish fundamental requirements including adherence to legal frameworks, regulatory obligations, and ethical standards; transparency and accountability in operations; data protection and privacy safeguards; anti-corruption measures; environmental protection; and workplace safety standards. These requirements apply to organizations regardless of size, sector, or jurisdiction and must be integrated into operational procedures and governance structures."
             },
             {
-                "query": "How does international law protect freedom of expression?",
-                "expected_topics": ["freedom of expression", "international law", "protection"],
+                "query": "What are the main principles of GDPR compliance?",
+                "expected_topics": ["GDPR", "data protection", "privacy", "compliance principles"],
                 "difficulty": "medium",
-                "reference_answer": "International law protects freedom of expression through Article 19 of the Universal Declaration of Human Rights and Article 19 of the International Covenant on Civil and Political Rights. This protection includes the right to seek, receive, and impart information and ideas through any media regardless of frontiers. However, this right may be subject to certain restrictions for respect of the rights of others, protection of national security, public order, or public health and morals, but such restrictions must be provided by law and necessary in a democratic society."
+                "reference_answer": "The main principles of GDPR compliance include lawfulness, fairness and transparency; purpose limitation; data minimization; accuracy; storage limitation; integrity and confidentiality; and accountability. Organizations must ensure they have a lawful basis for processing personal data, collect only necessary data for specified purposes, keep data accurate and up-to-date, implement appropriate security measures, and demonstrate compliance with all GDPR requirements."
             },
             {
-                "query": "What are the obligations of states regarding refugee protection?",
-                "expected_topics": ["refugee", "state obligations", "protection", "asylum"],
+                "query": "What compliance measures are required for AI systems?",
+                "expected_topics": ["AI systems", "compliance", "regulations", "requirements"],
                 "difficulty": "medium",
-                "reference_answer": "States have several key obligations regarding refugee protection under international law, particularly the 1951 Refugee Convention and its 1967 Protocol. These include the principle of non-refoulement (not returning refugees to territories where they face threats), providing access to fair and efficient asylum procedures, ensuring refugees have access to basic rights including education, healthcare, and work, and cooperating with UNHCR in the protection of refugees. States must also ensure that refugee status determination is conducted fairly and that recognized refugees receive appropriate documentation."
+                "reference_answer": "Compliance measures required for AI systems include risk assessment and management frameworks, transparency and explainability requirements, data governance and privacy protections, bias and fairness testing, human oversight mechanisms, documentation of development processes, regular auditing and testing, security safeguards, and adherence to sector-specific regulations. Organizations must implement these measures throughout the AI lifecycle from design to deployment and ongoing monitoring, with particular attention to high-risk AI applications that may impact fundamental rights, safety, or critical infrastructure."
             },
             {
-                "query": "How does the European Convention on Human Rights differ from the ICCPR?",
-                "expected_topics": ["european convention", "ICCPR", "differences", "comparison"],
+                "query": "How do European compliance frameworks differ from international standards?",
+                "expected_topics": ["european frameworks", "international standards", "differences", "comparison"],
                 "difficulty": "hard",
-                "reference_answer": "The European Convention on Human Rights (ECHR) and the International Covenant on Civil and Political Rights (ICCPR) differ in several key ways. The ECHR applies only to European states and has a supranational court system (European Court of Human Rights) with binding decisions, while the ICCPR is global with a Human Rights Committee that issues non-binding views. The ECHR covers primarily civil and political rights with some implied economic rights, while the ICCPR focuses exclusively on civil and political rights. The ECHR allows individual petitions directly to the court, whereas the ICCPR requires state ratification of the Optional Protocol for individual complaints."
+                "reference_answer": "European compliance frameworks and international standards differ in several key ways. European frameworks apply only to European states and organizations operating within the EU, with supranational enforcement mechanisms and binding decisions, while international standards are global with various enforcement mechanisms. European frameworks often have more stringent requirements and faster implementation timelines, while international standards provide broader flexibility for implementation. European frameworks allow direct enforcement actions, whereas international standards often rely on voluntary compliance and peer review mechanisms."
             },
             {
-                "query": "What remedies are available for human rights violations?",
+                "query": "What remedies are available for compliance violations?",
                 "expected_topics": ["remedies", "violations", "legal recourse", "compensation"],
                 "difficulty": "medium",
-                "reference_answer": "Remedies for human rights violations include domestic judicial remedies through national courts, administrative remedies through government agencies, international remedies through regional human rights courts or UN treaty bodies, reparations including restitution, compensation, rehabilitation, satisfaction, and guarantees of non-repetition. Victims may seek monetary damages, declaratory judgments, injunctive relief, criminal prosecution of perpetrators, and systemic reforms. The choice of remedy depends on the nature of the violation, available legal frameworks, and the jurisdiction where the violation occurred."
+                "reference_answer": "Remedies for compliance violations include domestic judicial remedies through national courts, administrative remedies through regulatory agencies, international remedies through regional compliance bodies or international organizations, reparations including restitution, compensation, rehabilitation, satisfaction, and guarantees of non-repetition. Organizations may face monetary penalties, declaratory judgments, injunctive relief, criminal prosecution of responsible parties, and systemic reforms. The choice of remedy depends on the nature of the violation, available legal frameworks, and the jurisdiction where the violation occurred."
             }
         ]
     

@@ -12,7 +12,7 @@ class LLMJudge:
     
     def __init__(self, llm_manager: Optional[LLMManager] = None, judge_model: Optional[str] = None):
         self.llm_manager = llm_manager or LLMManager()
-        self.judge_model = judge_model or "gpt-4"  # Use GPT-4 as default judge
+        self.judge_model = judge_model or "gpt-4.1"
         
         # Initialize judge prompts
         self.prompts = self._initialize_prompts()
@@ -25,7 +25,7 @@ class LLMJudge:
         # Overall quality evaluation
         quality_prompt = PromptTemplate(
             input_variables=["query", "context", "response"],
-            template="""You are an expert evaluator for legal and human rights question-answering systems.
+            template="""You are an expert evaluator for compliance and legal question-answering systems.
             Evaluate the following response based on the given query and context.
             
             Query: {query}
@@ -35,26 +35,19 @@ class LLMJudge:
             Response: {response}
             
             Please evaluate the response on the following criteria (score 1-10):
-            
-            1. ACCURACY: How factually correct AND informative is the response?
-               CRITICAL: Responses that say "no information available" or defer without providing 
-               legal knowledge should score 3-4 maximum, even if technically accurate.
-            2. RELEVANCE: How well does the response address the specific query?
-            3. COMPLETENESS: How thoroughly does the response answer the question? 
-               CRITICAL: If the response says "not enough information", "I don't know", or avoids 
-               providing substantive legal information, score 1-2. Legal assistants must provide 
-               knowledgeable answers, not defer to external sources.
+
+            1. ACCURACY: How factually correct is the response based on the provided context?
+            2. RELEVANCE: How well does the response address the specific compliance query?
+            3. COMPLETENESS: How thoroughly does the response answer the question using available information?
             4. CLARITY: How clear and well-structured is the response?
             5. CONTEXT_USE: How well does the response utilize the provided context?
-               CRITICAL: Responses that only cite context limitations without providing legal 
-               knowledge should score 1-3. Good responses blend context with domain expertise.
-            
-            STRICT SCORING GUIDELINES:
-            - Score 1-2: Non-answers, "I don't know", or responses that avoid providing information
-            - Score 3-4: Minimal information with heavy reliance on disclaimers
-            - Score 5-6: Basic but incomplete legal information
-            - Score 7-8: Substantial, accurate legal information with proper reasoning
-            - Score 9-10: Comprehensive, expert-level legal knowledge and analysis
+
+            BALANCED SCORING GUIDELINES FOR COMPLIANCE CONTENT:
+            - Score 1-3: Inaccurate, irrelevant, or completely unhelpful responses
+            - Score 4-5: Basic responses with some relevant information but lacking detail
+            - Score 6-7: Good responses that address the query with relevant compliance information
+            - Score 8-9: Excellent responses with comprehensive, accurate compliance guidance
+            - Score 10: Outstanding responses with expert-level compliance analysis and complete coverage
             
             Provide your evaluation in the following JSON format:
             {{
@@ -70,29 +63,27 @@ class LLMJudge:
         # Factual accuracy evaluation
         factual_prompt = PromptTemplate(
             input_variables=["context", "response"],
-            template="""You are an expert fact-checker for legal documents.
+            template="""You are an expert fact-checker for compliance and regulatory documents.
             Evaluate the factual quality of the response considering both accuracy AND informativeness.
             
             Context: {context}
             
             Response: {response}
             
-            STEP 1: Check if the response says "no information available", "context doesn't contain", 
-            or defers to external sources. If YES, you MUST score 3-4 maximum.
-            
-            STEP 2: Evaluate based on these criteria:
+            Evaluate based on these criteria:
             1. Factual Accuracy: Check for hallucinations, incorrect claims, or unsupported statements
-            2. Informativeness: Assess whether the response provides substantive, useful information
-            3. Knowledge Application: Whether the response demonstrates understanding beyond just the context
+            2. Informativeness: Assess whether the response provides useful compliance information
+            3. Context Alignment: Whether the response aligns with the provided context
+
+            BALANCED SCORING RULES FOR COMPLIANCE CONTENT:
+            - Score 8-10: Factually accurate with substantial, useful compliance information
+            - Score 6-7: Factually accurate with good informational value
+            - Score 4-5: Accurate but limited information, or appropriate acknowledgment of limitations
+            - Score 2-3: Minor factual issues or very limited information
+            - Score 1: Contains significant factual errors or hallucinations
             
-            SCORING RULES (follow strictly):
-            - If response claims "no information" or defers → Score 3-4 ONLY
-            - Score 8-10: Factually accurate AND provides substantial, useful information
-            - Score 5-7: Factually accurate with moderate informational value
-            - Score 3-4: Accurate but non-informative (e.g., "I don't know", "no information available")
-            - Score 1-2: Contains factual errors or hallucinations
-            
-            Remember: Legal AI assistants should provide knowledge, not just acknowledge ignorance.
+            Note: For compliance responses that correctly acknowledge limitations or provide accurate regulatory guidance,
+            even if brief, should score in the 6-7 range rather than being penalized.
             
             Provide your evaluation in JSON format:
             {{
@@ -107,40 +98,38 @@ class LLMJudge:
         # Legal domain relevance
         legal_relevance_prompt = PromptTemplate(
             input_variables=["query", "response"],
-            template="""You are an expert in human rights law and legal systems.
-            Evaluate how well the following response addresses the legal query in terms of:
+            template="""You are an expert in compliance law and regulatory frameworks.
+            Evaluate how well the following response addresses the compliance query in terms of:
             
             Query: {query}
             Response: {response}
             
             Criteria:
             1. Legal accuracy and proper use of legal terminology
-            2. Relevance to human rights law
+            2. Relevance to compliance law and regulatory frameworks
             3. Appropriate legal reasoning
             4. Citation of relevant legal instruments or principles
             
-            CRITICAL EVALUATION STANDARDS:
-            - Responses saying "not enough information" or "I don't know" for well-established 
-              legal concepts should score 1-2 (completely inadequate)
-            - Legal assistants are expected to know basic legal principles and mechanisms
-            - Avoid rewarding responses that defer responsibility without providing knowledge
-            - A good legal response should mention relevant courts, laws, or procedures
-            
-            STRICT SCORING GUIDELINES:
-            - Score 1-2: Completely inadequate, avoids legal knowledge, non-substantive
-            - Score 3-4: Minimal legal content, mostly disclaimers and deferrals  
-            - Score 5-6: Basic legal understanding with some relevant information
-            - Score 7-8: Good legal knowledge with proper reasoning and citations
-            - Score 9-10: Expert-level legal analysis with comprehensive understanding
+            EVALUATION STANDARDS:
+            - Good compliance responses should mention relevant regulations, standards, or procedures
+            - Responses should demonstrate understanding of compliance frameworks
+            - Consider the complexity of compliance topics when evaluating completeness
+
+            BALANCED SCORING GUIDELINES:
+            - Score 1-3: Inadequate, inaccurate, or completely off-topic responses
+            - Score 4-5: Basic compliance understanding with limited relevant information
+            - Score 6-7: Good compliance knowledge with relevant regulations and reasoning
+            - Score 8-9: Strong compliance expertise with comprehensive analysis
+            - Score 10: Expert-level compliance analysis with exceptional understanding
             
             Provide evaluation in JSON format:
             {{
                 "legal_accuracy": <score_1_to_10>,
-                "human_rights_relevance": <score_1_to_10>,
+                "compliance_relevance": <score_1_to_10>,
                 "legal_reasoning": <score_1_to_10>,
                 "proper_citations": <score_1_to_10>,
                 "overall_legal_quality": <average_score>,
-                "legal_concepts_identified": ["<concept1>", "<concept2>"],
+                "compliance_concepts_identified": ["<concept1>", "<concept2>"],
                 "explanation": "<explanation>"
             }}"""
         )
@@ -360,19 +349,19 @@ class LLMJudge:
         import re
         
         scores = {
-            "legal_accuracy": 5.0,
-            "human_rights_relevance": 5.0,
-            "legal_reasoning": 5.0,
-            "proper_citations": 5.0,
-            "overall_legal_quality": 5.0,
-            "legal_concepts_identified": [],
+            "legal_accuracy": 6.0,
+            "compliance_relevance": 6.0,
+            "legal_reasoning": 6.0,
+            "proper_citations": 6.0,
+            "overall_legal_quality": 6.0,
+            "compliance_concepts_identified": [],
             "explanation": "Could not parse detailed evaluation"
         }
         
         # Extract scores
         score_patterns = [
             (r'legal_accuracy[:\s]+(\d+(?:\.\d+)?)', 'legal_accuracy'),
-            (r'human_rights_relevance[:\s]+(\d+(?:\.\d+)?)', 'human_rights_relevance'),
+            (r'compliance_relevance[:\s]+(\d+(?:\.\d+)?)', 'compliance_relevance'),
             (r'legal_reasoning[:\s]+(\d+(?:\.\d+)?)', 'legal_reasoning'),
             (r'proper_citations[:\s]+(\d+(?:\.\d+)?)', 'proper_citations')
         ]
@@ -383,7 +372,7 @@ class LLMJudge:
                 scores[key] = float(match.group(1))
         
         # Calculate overall
-        component_scores = [scores[k] for k in ["legal_accuracy", "human_rights_relevance", "legal_reasoning", "proper_citations"]]
+        component_scores = [scores[k] for k in ["legal_accuracy", "compliance_relevance", "legal_reasoning", "proper_citations"]]
         scores["overall_legal_quality"] = sum(component_scores) / len(component_scores)
         
         return scores

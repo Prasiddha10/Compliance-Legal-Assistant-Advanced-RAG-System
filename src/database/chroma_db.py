@@ -79,10 +79,21 @@ class ChromaDBManager:
         """Perform similarity search with relevance scores."""
         try:
             results = self.vectorstore.similarity_search_with_score(query, k=k)
-            
-            logger.info(f"Found {len(results)} similar documents with scores")
-            return results
-            
+            logger.debug(f"ChromaDB search returned {len(results)} results")
+            # Ensure results are always (Document, score) tuples
+            fixed_results = []
+            for item in results:
+                if isinstance(item, tuple) and len(item) == 2:
+                    doc, score = item
+                elif isinstance(item, dict) and 'document' in item and 'score' in item:
+                    doc = item['document']
+                    score = item['score']
+                else:
+                    logger.warning(f"Unexpected result format in ChromaDBManager: {item}")
+                    continue
+                fixed_results.append((doc, float(score)))
+            logger.debug(f"ChromaDB extracted {len(fixed_results)} document results")
+            return fixed_results
         except Exception as e:
             logger.error(f"Error in similarity search with scores: {e}")
             raise
@@ -138,3 +149,84 @@ class ChromaDBManager:
         except Exception as e:
             logger.error(f"Error updating document: {e}")
             raise
+    
+    def check_document_exists(self, file_path: str, file_hash: Optional[str] = None) -> Dict[str, Any]:
+        """Check if a document already exists in the database."""
+        try:
+            collection = self.client.get_collection(self.collection_name)
+            
+            # Query by file path in metadata
+            if file_path is not None:
+                where_clause: Dict[str, Any] = {"source": file_path}
+            else:
+                where_clause: Dict[str, Any] = {}
+
+            results = collection.get(
+                where=where_clause,
+                include=['metadatas', 'documents']
+            )
+            
+            if results['ids']:
+                # Document exists, return details
+                return {
+                    "exists": True,
+                    "database": "ChromaDB",
+                    "file_path": file_path,
+                    "document_count": len(results['ids']),
+                    "chunk_ids": results['ids']
+                }
+            
+            # If file hash is provided, also check by hash
+            if file_hash:
+                # Ensure file_hash is a string or a type compatible with LiteralValue
+                where_clause_hash: Dict[str, Any] = {"file_hash": str(file_hash)}
+                results_hash = collection.get(
+                    where=where_clause_hash,
+                    include=['metadatas']
+                )
+                
+                if results_hash['ids']:
+                    return {
+                        "exists": True,
+                        "database": "ChromaDB",
+                        "file_path": file_path,
+                        "file_hash": file_hash,
+                        "document_count": len(results_hash['ids']),
+                        "chunk_ids": results_hash['ids'],
+                        "detected_by": "file_hash"
+                    }
+            
+            return {
+                "exists": False,
+                "database": "ChromaDB",
+                "file_path": file_path
+            }
+            
+        except Exception as e:
+            logger.error(f"Error checking document existence in ChromaDB: {e}")
+            return {
+                "exists": False,
+                "database": "ChromaDB",
+                "file_path": file_path,
+                "error": str(e)
+            }
+    
+    def get_all_document_sources(self) -> List[str]:
+        """Get all unique document source paths in the database."""
+        try:
+            collection = self.client.get_collection(self.collection_name)
+            results = collection.get(include=['metadatas'])
+            
+            sources = set()
+            metadatas = results.get('metadatas', [])
+            if metadatas is None:
+                metadatas = []
+            for metadata in metadatas:
+                if metadata and 'source' in metadata:
+                    sources.add(metadata['source'])
+            
+            return list(sources)
+            
+        except Exception as e:
+            logger.error(f"Error getting document sources from ChromaDB: {e}")
+            return []

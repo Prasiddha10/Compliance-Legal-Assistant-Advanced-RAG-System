@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Human Rights Legal Assistant - Nepal Constitution</title>
+    <title>Compliance Legal Assistant - Documents & Web Search</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <link href="/static/css/styles.css" rel="stylesheet">
@@ -22,7 +22,7 @@
         <div class="container">
             <div class="logo">
                 <i class="fas fa-balance-scale"></i>
-                <span>Human Rights Legal Assistant</span>
+                <span>Compliance Legal Assistant</span>
             </div>
             <nav class="nav">
                 <button class="nav-btn" onclick="showTab('chat')">
@@ -48,22 +48,50 @@
             <div id="chat-tab" class="tab active">
                 <div class="chat-container">
                     <div class="chat-header">
-                        <h2><i class="fas fa-robot"></i> Human Rights Legal Assistant</h2>
-                        <p>Ask questions about human rights documents and legal information</p>
+                        <h2><i class="fas fa-robot"></i> Compliance Legal Assistant</h2>
+                        <p>Ask questions about compliance documents and legal information - with intelligent web search fallback</p>
                     </div>
                     
                     <div class="chat-messages" id="chat-messages">
                         <div class="message bot-message">
                             <div class="message-content">
                                 <div class="message-text">
-                                    <p>⚖️ Welcome to the Human Rights Legal Assistant!</p>
-                                    <p>I can help you find information about human rights documents and legal principles. Ask me questions and I'll provide accurate answers with source citations.</p>
-                                    <p><strong>Example queries:</strong></p>
+                                    <p>⚖️ Welcome to the Compliance Legal Assistant!</p>
+                                    <p>I can help you find information about compliance documents and legal principles. Ask me questions and I'll provide accurate answers from our knowledge base.</p>
+
+                                    <div class="feature-highlight">
+                                        <p><strong>🔍 Smart Search Features:</strong></p>
+                                        <ul>
+                                            <li><strong>Document Search:</strong> I'll search through uploaded compliance documents first</li>
+                                            <li><strong>Google & Bing Web Search:</strong> If no relevant documents are found, I'll automatically search Google and Bing for current information</li>
+                                            <li><strong>Real-time Information:</strong> Get the latest compliance updates and regulatory changes from trusted sources</li>
+                                        </ul>
+                                    </div>
+
+                                    <p><strong>📋 Example Compliance Queries (English):</strong></p>
                                     <ul>
-                                        <li>"What are the fundamental human rights?"</li>
-                                        <li>"What does Article 19 of the UDHR say about freedom of expression?"</li>
-                                        <li>"What are the key principles of international human rights law?"</li>
+                                        <li>"What are the fundamental compliance requirements?"</li>
+                                        <li>"What are the key data protection compliance obligations?"</li>
+                                        <li>"What are the key principles of international compliance law?"</li>
                                     </ul>
+
+                                    <p><strong>📋 नेपाली भाषामा उदाहरण प्रश्नहरू:</strong></p>
+                                    <ul>
+                                        <li>"मुख्य अनुपालन आवश्यकताहरू के के छन्?"</li>
+                                        <li>"डेटा सुरक्षा अनुपालन दायित्वहरू के छन्?"</li>
+                                        <li>"अन्तर्राष्ट्रिय अनुपालन कानूनका मुख्य सिद्धान्तहरू के छन्?"</li>
+                                    </ul>
+
+                                    <p><strong>🌐 Example Web Search Queries:</strong></p>
+                                    <ul>
+                                        <li>"Latest cryptocurrency regulations 2024"</li>
+                                        <li>"Recent AI compliance updates"</li>
+                                        <li>"नयाँ डेटा सुरक्षा नियमहरू २०२४"</li>
+                                    </ul>
+
+                                    <div class="info-note">
+                                        <p><em>💡 Tip: I automatically determine whether to search documents or the web based on your query relevance!</em></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +99,7 @@
 
                     <div class="chat-input-container">
                         <div class="input-group">
-                            <input type="text" id="query-input" placeholder="Ask about human rights and legal documents..." autocomplete="off">
+                            <input type="text" id="query-input" placeholder="Ask about compliance and legal documents... / अनुपालन र कानूनी कागजातहरूको बारेमा सोध्नुहोस्..." autocomplete="off">
                             <button id="send-btn" onclick="sendQuery()">
                                 <i class="fas fa-paper-plane"></i>
                             </button>
@@ -83,18 +111,14 @@
                                     <option value="gpt-3.5-turbo">OpenAI GPT-3.5 Turbo</option>
                                     <option value="gpt-4">OpenAI GPT-4</option>
                                     <option value="llama-3.1-8b-instant">Groq Llama 3.1 8B</option>
-                                    <option value="mixtral-8x7b-32768">Groq Mixtral 8x7B</option>
-                                    <option value="gemma2-9b-it">Groq Gemma2 9B</option>
-                                    <option value="gemini-1.5-flash">Google Gemini 1.5 Flash</option>
-                                    <option value="gemini-1.5-pro">Google Gemini 1.5 Pro</option>
                                 </select>
                             </div>
                             <div class="language-selection">
-                                <label for="language-select">Language:</label>
+                                <label for="language-select">भाषा/Language:</label>
                                 <select id="language-select">
-                                    <option value="auto">Auto-detect</option>
-                                    <option value="en">English</option>
-                                    <option value="ne">Nepali</option>
+                                    <option value="auto"> Auto-detect</option>
+                                    <option value="en"> English</option>
+                                    <option value="ne"> Nepali (नेपाली)</option>
                                 </select>
                             </div>
                         </div>
@@ -112,9 +136,12 @@
                     
                     <div class="upload-area" id="upload-area">
                         <div class="upload-content">
-                            <i class="fas fa-file-pdf upload-icon"></i>
-                            <p>Drag and drop PDF files here or click to select</p>
-                            <input type="file" id="file-input" accept=".pdf" multiple style="display: none;">
+                            <i class="fas fa-file-alt upload-icon"></i>
+                            <p>Drag and drop documents here or click to select</p>
+                            <p style="font-size: 14px; color: #666; margin-top: 8px;">
+                                Supported formats: PDF, DOCX, TXT
+                            </p>
+                            <input type="file" id="file-input" accept=".pdf,.docx,.txt" multiple style="display: none;">
                             <button class="upload-btn" onclick="document.getElementById('file-input').click()">
                                 Select Files
                             </button>
@@ -143,11 +170,19 @@
                             <h3>Test Queries</h3>
                             <div class="query-inputs">
                                 <div class="query-input-group">
-                                    <input type="text" class="eval-query" placeholder="Enter test query..." value="What is the official language of Nepal?">
+                                    <input type="text" class="eval-query" placeholder="Enter test query..." value="What are the key data protection compliance requirements?">
                                     <button onclick="removeQuery(this)"><i class="fas fa-trash"></i></button>
                                 </div>
                                 <div class="query-input-group">
-                                    <input type="text" class="eval-query" placeholder="Enter test query..." value="नेपालको राजकीय भाषा के हो?">
+                                    <input type="text" class="eval-query" placeholder="Enter test query..." value="What are the main principles of GDPR compliance?">
+                                    <button onclick="removeQuery(this)"><i class="fas fa-trash"></i></button>
+                                </div>
+                                <div class="query-input-group">
+                                    <input type="text" class="eval-query" placeholder="Enter test query..." value="What compliance measures are required for AI systems?">
+                                    <button onclick="removeQuery(this)"><i class="fas fa-trash"></i></button>
+                                </div>
+                                <div class="query-input-group">
+                                    <input type="text" class="eval-query" placeholder="Enter test query..." value="What are the regulatory requirements for financial compliance?">
                                     <button onclick="removeQuery(this)"><i class="fas fa-trash"></i></button>
                                 </div>
                             </div>
@@ -230,7 +265,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2024 Human Rights Legal Assistant. Built for Nepal Constitution queries.</p>
+            <p>&copy; 2025 Compliance Legal Assistant. Built for compliance and regulatory queries with intelligent document search and web fallback.</p>
         </div>
     </footer>
 

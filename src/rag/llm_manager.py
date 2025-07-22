@@ -1,21 +1,27 @@
 """LLM clients for different providers."""
 from typing import Dict, Any, List, Optional
-import openai
-from groq import Groq
-from langchain_core.language_models.llms import LLM
-from langchain_core.callbacks.manager import CallbackManagerForLLMRun
-from langchain_openai import ChatOpenAI
-from src.config import Config
 import logging
 
-# Try to import Google Generative AI
-try:
-    import google.generativeai as genai
-    from langchain_google_genai import ChatGoogleGenerativeAI
-    GOOGLE_AI_AVAILABLE = True
-except ImportError:
-    GOOGLE_AI_AVAILABLE = False
+# Core imports
+from langchain_core.language_models.llms import LLM
+from langchain_core.callbacks.manager import CallbackManagerForLLMRun
+from src.config import Config
 
+# Try to import OpenAI
+try:
+    from langchain_openai import ChatOpenAI
+    OPENAI_AVAILABLE = True
+except ImportError:
+    OPENAI_AVAILABLE = False
+    ChatOpenAI = None
+
+# Try to import Groq
+try:
+    from groq import Groq
+    GROQ_AVAILABLE = True
+except ImportError:
+    GROQ_AVAILABLE = False
+    Groq = None
 logger = logging.getLogger(__name__)
 
 class GroqLLM(LLM):
@@ -28,9 +34,12 @@ class GroqLLM(LLM):
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        if not GROQ_AVAILABLE or Groq is None:
+            raise ImportError("Groq module not available. Install with: pip install groq")
         if not Config.GROQ_API_KEY:
             raise ValueError("GROQ_API_KEY is required")
-        
+
+        # Initialize Groq client with only the API key
         self.client = Groq(api_key=Config.GROQ_API_KEY)
         self.model_name = kwargs.get("model_name", Config.GROQ_MODEL)
         self.max_tokens = kwargs.get("max_tokens", 1024)
@@ -75,81 +84,42 @@ class LLMManager:
     def _initialize_models(self):
         """Initialize available LLM models."""
         # OpenAI models
-        if Config.OPENAI_API_KEY:
+        if Config.OPENAI_API_KEY and OPENAI_AVAILABLE and ChatOpenAI is not None:
             try:
-                from pydantic import SecretStr
+                # Set the API key in environment for langchain-openai
+                import os
+                os.environ["OPENAI_API_KEY"] = Config.OPENAI_API_KEY
 
                 self.models["gpt-3.5-turbo"] = ChatOpenAI(
                     model="gpt-3.5-turbo",
-                    temperature=0.1,
-                    api_key=SecretStr(Config.OPENAI_API_KEY)
+                    temperature=0.1
                 )
-                
+
                 self.models["gpt-4"] = ChatOpenAI(
                     model="gpt-4",
-                    temperature=0.1,
-                    api_key=SecretStr(Config.OPENAI_API_KEY)
+                    temperature=0.1
                 )
                 logger.info("OpenAI models initialized")
-                
+
             except Exception as e:
                 logger.warning(f"Could not initialize OpenAI models: {e}")
+        elif not OPENAI_AVAILABLE:
+            logger.warning("OpenAI module not available. Install with: pip install langchain-openai")
         
         # Groq models
-        if Config.GROQ_API_KEY:
+        if Config.GROQ_API_KEY and GROQ_AVAILABLE:
             try:
-                # Using currently available Groq models
+                # Only keep supported Groq models (remove gemma2-9b-it and llama3-8b-8192)
                 self.models["llama-3.1-8b-instant"] = GroqLLM(
                     model_name="llama-3.1-8b-instant",
                     temperature=0.1,
                     max_tokens=1024
                 )
-                
-                # Add other available models
-                self.models["mixtral-8x7b-32768"] = GroqLLM(
-                    model_name="mixtral-8x7b-32768",
-                    temperature=0.1,
-                    max_tokens=1024
-                )
-                
-                self.models["gemma2-9b-it"] = GroqLLM(
-                    model_name="gemma2-9b-it",
-                    temperature=0.1,
-                    max_tokens=1024
-                )
-                
                 logger.info("Groq models initialized")
-                
             except Exception as e:
                 logger.warning(f"Could not initialize Groq models: {e}")
-        
-        # Google Gemini models
-        if GOOGLE_AI_AVAILABLE and Config.GOOGLE_API_KEY:
-            try:
-                # Use the current supported Gemini model
-                from pydantic import SecretStr
-
-                self.models["gemini-1.5-flash"] = ChatGoogleGenerativeAI(
-                    model="gemini-1.5-flash",
-                    temperature=0.1,
-                    api_key=SecretStr(Config.GOOGLE_API_KEY)
-                )
-                # Also add the pro version if available
-                self.models["gemini-1.5-pro"] = ChatGoogleGenerativeAI(
-                    model="gemini-1.5-pro",
-                    temperature=0.1,
-                    api_key=SecretStr(Config.GOOGLE_API_KEY)
-                )
-                logger.info("Google Gemini models initialized")
-                
-            except Exception as e:
-                logger.warning(f"Could not initialize Google Gemini models: {e}")
-        
-        if not self.models:
-            logger.warning("No LLM models initialized. Please check your API keys.")
-        else:
-            logger.info(f"Initialized {len(self.models)} LLM models: {list(self.models.keys())}")
-    
+        elif not GROQ_AVAILABLE:
+            logger.warning("Groq module not available. Install with: pip install groq")
     def get_model(self, model_name: Optional[str] = None):
         """Get a specific model or default model."""
         if model_name and model_name in self.models:
@@ -166,6 +136,27 @@ class LLMManager:
     def list_available_models(self) -> List[str]:
         """List all available model names."""
         return list(self.models.keys())
+
+    def generate_response(self, prompt: str, model_name: Optional[str] = None, **kwargs) -> str:
+        """Generate a response using the specified model."""
+        try:
+            model = self.get_model(model_name)
+
+            # Handle different model types
+            if hasattr(model, 'invoke'):
+                # LangChain ChatModel
+                response = model.invoke(prompt, **kwargs)
+                return response.content if hasattr(response, 'content') else str(response)
+            elif hasattr(model, '__call__'):
+                # Custom model with __call__ method
+                return model(prompt, **kwargs)
+            else:
+                # Fallback for other model types
+                return str(model.predict(prompt, **kwargs))
+
+        except Exception as e:
+            logger.error(f"Error generating response with model {model_name}: {e}")
+            raise
     
     def test_model(self, model_name: str, test_prompt: str = "Hello, how are you?") -> Dict[str, Any]:
         """Test a specific model."""

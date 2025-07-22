@@ -1,4 +1,5 @@
 // Global variables
+console.log('=== Compliance RAG System JS Loaded ===');
 let currentTab = 'chat';
 let isLoading = false;
 
@@ -10,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function initializeApp() {
     try {
         // Check system health
-        const healthCheck = await fetch('http://localhost:8004/health');
+        const healthCheck = await fetch('http://localhost:8005/health');
         const healthData = await healthCheck.json();
         
         if (!healthData.system_initialized) {
@@ -117,7 +118,7 @@ async function sendQuery() {
     queryInput.value = '';
     
     try {
-        const response = await fetch('http://localhost:8004/api/query', {
+        const response = await fetch('http://localhost:8005/api/query', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -153,15 +154,17 @@ function addMessage(text, sender, sources = null, metadata = null) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${sender}-message fade-in`;
     
-    let sourcesHtml = '';
-    if (sources && sources.length > 0) {
-        sourcesHtml = `
-            <div class="message-sources">
-                <h4><i class="fas fa-book"></i> Sources:</h4>
-                ${sources.map(source => `
-                    <div class="source-item">
-                        <div class="source-title">${source.metadata.source || 'Unknown Source'}</div>
-                        <div class="source-content">${source.content.substring(0, 200)}...</div>
+    let webSearchHtml = '';
+    if (metadata && metadata.web_search_results && metadata.web_search_results.length > 0) {
+        webSearchHtml = `
+            <div class="message-web-search">
+                <h4><i class="fas fa-globe"></i> Additional Web Resources:</h4>
+                ${metadata.web_search_results.map(result => `
+                    <div class="web-result-item">
+                        <a href="${result.url}" target="_blank" class="web-result-link">
+                            <strong>${result.title}</strong>
+                        </a>
+                        <p class="web-result-snippet">${result.snippet || 'No description available'}</p>
                     </div>
                 `).join('')}
             </div>
@@ -221,7 +224,7 @@ function addMessage(text, sender, sources = null, metadata = null) {
     messageDiv.innerHTML = `
         <div class="message-content">
             <div class="message-text">${formatMessage(text)}</div>
-            ${sourcesHtml}
+            ${webSearchHtml}
             ${evaluationHtml}
             ${metadataHtml}
         </div>
@@ -243,13 +246,32 @@ function formatMessage(text) {
     text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
     text = text.replace(/\n/g, '<br>');
+
+    // Format legal references with bold blue background style
+    console.log('Original text before formatting:', text.substring(0, 200));
     
-    // Convert article references to highlighted text
-    text = text.replace(/Article\s+(\d+)/gi, '<span style="background: #667eea; color: white; padding: 2px 6px; border-radius: 4px; font-weight: bold;">Article $1</span>');
+    // Create the bold blue styling like in official documents
+    const articleStyle = 'background-color: #1976d2 !important; color: white !important; padding: 4px 8px !important; border-radius: 4px !important; border: 2px solid #0d47a1 !important; font-weight: 700 !important; text-transform: uppercase !important; letter-spacing: 0.5px !important; box-shadow: 0 2px 4px rgba(25, 118, 210, 0.3) !important; margin: 0 2px !important; display: inline-block !important;';
     
-    // Convert section references to highlighted text
-    text = text.replace(/Section\s+(\d+)/gi, '<span style="background: #2ed573; color: white; padding: 2px 6px; border-radius: 4px; font-weight: bold;">Section $1</span>');
-    
+    // Format parenthetical article references like (Art.40), (Art.49(1)), (Art.55(2))
+    text = text.replace(/\(Art\.(\d+(?:\(\d+\))?)\)/g, `<span class="article-reference" style="${articleStyle}">(ART.$1)</span>`);
+
+    // Format standalone Art. references like Art.40, Art.49, Art.55
+    text = text.replace(/\bArt\.(\d+(?:\(\d+\))?)\b/g, `<span class="article-reference" style="${articleStyle}">ART.$1</span>`);
+
+    // Format Articles references like Articles 8-15, Article 55
+    text = text.replace(/\bArticles?\s+(\d+(?:[-–]\d+)?)\b/g, `<span class="article-reference" style="${articleStyle}">ARTICLE $1</span>`);
+
+    // Format section references
+    text = text.replace(/Section\s+(\d+)/gi, `<span class="article-reference" style="${articleStyle}">SECTION $1</span>`);
+
+    // Format document references like (Document 1)
+    text = text.replace(/\((Document\s+\d+)\)/g, `<span class="article-reference" style="${articleStyle}">($1)</span>`);
+
+    // Format recommendation references like (Rec.115)
+    text = text.replace(/\((Rec\.\d+)\)/g, `<span class="article-reference" style="${articleStyle}">($1)</span>`);
+
+    console.log('Formatted text with bold blue styling:', text.substring(0, 300));
     return text;
 }
 
@@ -268,19 +290,42 @@ async function handleFileUpload(event) {
         const file = files[i];
         
         // Check file type
-        if (!file.type.includes('pdf')) {
-            showError(`File ${file.name} is not a PDF. Only PDF files are supported.`);
+        const allowedExtensions = ['.pdf', '.docx', '.txt'];
+        const fileName = file.name.toLowerCase();
+        const isValidFile = allowedExtensions.some(ext => fileName.endsWith(ext));
+        
+        if (!isValidFile) {
+            showError(`File ${file.name} is not supported. Only PDF, DOCX, and TXT files are supported.`);
             continue;
         }
         
         try {
+            // Clear any existing messages when starting new upload
+            clearDuplicateMessage();
+            clearSuccessMessage();
+
             uploadStatus.textContent = `Uploading ${file.name}...`;
-            progressFill.style.width = '0%';
+            progressFill.style.width = '10%';
+
+            // Start progress simulation for large files
+            let progressInterval = setInterval(() => {
+                let currentWidth = parseInt(progressFill.style.width) || 10;
+                if (currentWidth < 90) {
+                    progressFill.style.width = `${Math.min(currentWidth + 2, 90)}%`;
+                    if (currentWidth < 30) {
+                        uploadStatus.textContent = `Processing ${file.name}...`;
+                    } else if (currentWidth < 60) {
+                        uploadStatus.textContent = `Generating embeddings for ${file.name}...`;
+                    } else {
+                        uploadStatus.textContent = `Storing in databases for ${file.name}...`;
+                    }
+                }
+            }, 500);
             
             const formData = new FormData();
             formData.append('file', file);
             
-            const response = await fetch('http://localhost:8004/api/upload', {
+            const response = await fetch('http://localhost:8005/api/upload', {
                 method: 'POST',
                 body: formData
             });
@@ -290,14 +335,33 @@ async function handleFileUpload(event) {
             }
             
             const data = await response.json();
-            
+
+            // Clear progress interval and set to 100%
+            clearInterval(progressInterval);
             progressFill.style.width = '100%';
-            uploadStatus.textContent = `${file.name} uploaded successfully!`;
-            
-            showSuccess(`File ${file.name} uploaded and is being processed.`);
+
+            // Check for duplicate status
+            if (data.is_duplicate) {
+                // Extract database names from existing_in_databases
+                const databaseNames = data.existing_in_databases ?
+                    data.existing_in_databases.map(db => db.database || 'Unknown').join(', ') :
+                    'ChromaDB, Pinecone';
+
+                uploadStatus.textContent = `${file.name} already exists!`;
+                showDuplicateMessage(`File "${file.name}" is already embedded in ${databaseNames}. No need to upload again.`);
+            } else {
+                uploadStatus.textContent = `${file.name} uploaded successfully!`;
+                const successMessage = `File ${file.name} uploaded and is being processed. File hash: ${data.file_hash ? data.file_hash.substring(0, 8) + '...' : 'N/A'}`;
+                showSuccess(successMessage);
+                showSuccessMessage(successMessage);
+                // Clear any existing duplicate message when a new file is uploaded
+                clearDuplicateMessage();
+            }
             
         } catch (error) {
             console.error('Error uploading file:', error);
+            clearInterval(progressInterval);
+            uploadStatus.textContent = `Failed to upload ${file.name}`;
             showError(`Failed to upload ${file.name}. Please try again.`);
         }
     }
@@ -326,12 +390,18 @@ function removeQuery(button) {
 }
 
 async function runEvaluation() {
+    console.log('=== runEvaluation called ===');
+    
     const queryInputs = document.querySelectorAll('.eval-query');
+    console.log('Query inputs found:', queryInputs.length);
+    
     const detailedMetrics = document.getElementById('detailed-metrics').checked;
     
     const queries = Array.from(queryInputs)
         .map(input => input.value.trim())
         .filter(query => query.length > 0);
+    
+    console.log('Valid queries:', queries);
     
     if (queries.length === 0) {
         showError('Please enter at least one query for evaluation.');
@@ -339,35 +409,68 @@ async function runEvaluation() {
     }
     
     const evaluateBtn = document.querySelector('.evaluate-btn');
+    if (!evaluateBtn) {
+        console.error('Evaluate button not found!');
+        showError('Evaluate button not found. Please refresh the page.');
+        return;
+    }
+    
     evaluateBtn.disabled = true;
     evaluateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Running Evaluation...';
     
     try {
-        const response = await fetch('http://localhost:8004/api/evaluate', {
+        console.log('Starting evaluation with queries:', queries);
+        console.log('Include detailed metrics:', detailedMetrics);
+        
+        const requestBody = {
+            queries: queries,
+            include_detailed_metrics: detailedMetrics
+        };
+        
+        console.log('Request body:', JSON.stringify(requestBody, null, 2));
+        
+        const response = await fetch('http://localhost:8005/api/evaluate', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                queries: queries,
-                include_detailed_metrics: detailedMetrics
-            })
+            body: JSON.stringify(requestBody)
         });
         
+        console.log('Response status:', response.status);
+        console.log('Response ok:', response.ok);
+        
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const errorText = await response.text();
+            console.error('Response error text:', errorText);
+            throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
         }
         
         const data = await response.json();
+        console.log('Evaluation response data:', data);
         
         displayEvaluationResults(data);
         
     } catch (error) {
         console.error('Error running evaluation:', error);
-        showError('Failed to run evaluation. Please try again.');
+        
+        let errorMessage = 'Failed to run evaluation';
+        
+        if (error.name === 'TypeError' && error.message.includes('fetch')) {
+            errorMessage = 'Failed to connect to the backend server. Please ensure the backend is running on port 8005.';
+        } else if (error.message.includes('HTTP error')) {
+            errorMessage = `Server error: ${error.message}`;
+        } else {
+            errorMessage = `Failed to run evaluation: ${error.message}`;
+        }
+        
+        showError(errorMessage);
     } finally {
-        evaluateBtn.disabled = false;
-        evaluateBtn.innerHTML = '<i class="fas fa-play"></i> Run Evaluation';
+        const evaluateBtn = document.querySelector('.evaluate-btn');
+        if (evaluateBtn) {
+            evaluateBtn.disabled = false;
+            evaluateBtn.innerHTML = '<i class="fas fa-play"></i> Run Evaluation';
+        }
     }
 }
 
@@ -393,9 +496,28 @@ function displayEvaluationResults(data) {
             <div class="result-score">Overall Score: ${result.overall_score?.toFixed(2) || 'N/A'}</div>
             ${result.detailed_metrics ? `
                 <div class="result-details">
-                    <p><strong>Retrieval Score:</strong> ${result.detailed_metrics.retrieval_score?.toFixed(2) || 'N/A'}</p>
-                    <p><strong>Generation Score:</strong> ${result.detailed_metrics.generation_score?.toFixed(2) || 'N/A'}</p>
-                    <p><strong>Processing Time:</strong> ${result.processing_time?.toFixed(2) || 'N/A'}s</p>
+                    <div class="metric-row">
+                        <span class="metric-label">Retrieval Score:</span>
+                        <span class="metric-value ${getScoreClass(result.detailed_metrics.retrieval_score || 0)}">${result.detailed_metrics.retrieval_score?.toFixed(2) || 'N/A'}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Generation Score:</span>
+                        <span class="metric-value ${getScoreClass(result.detailed_metrics.generation_score || 0)}">${result.detailed_metrics.generation_score?.toFixed(2) || 'N/A'}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Judge Score:</span>
+                        <span class="metric-value ${getScoreClass(result.detailed_metrics.judge_score || 0)}">${result.detailed_metrics.judge_score?.toFixed(2) || 'N/A'}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Processing Time:</span>
+                        <span class="metric-value">${result.processing_time?.toFixed(2) || 'N/A'}s</span>
+                    </div>
+                    ${result.database_used ? `
+                        <div class="metric-row">
+                            <span class="metric-label">Database Used:</span>
+                            <span class="metric-value">${result.database_used}</span>
+                        </div>
+                    ` : ''}
                 </div>
             ` : ''}
         </div>
@@ -407,7 +529,7 @@ function displayEvaluationResults(data) {
 // Stats Functions
 async function refreshStats() {
     try {
-        const response = await fetch('http://localhost:8004/api/stats');
+        const response = await fetch('http://localhost:8005/api/stats');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -447,6 +569,10 @@ function showSuccess(message) {
     showNotification(message, 'success');
 }
 
+function showWarning(message) {
+    showNotification(message, 'warning');
+}
+
 function showNotification(message, type = 'info') {
     // Create notification element
     const notification = document.createElement('div');
@@ -472,6 +598,9 @@ function showNotification(message, type = 'info') {
             break;
         case 'success':
             notification.style.background = 'linear-gradient(135deg, #2ed573, #26d063)';
+            break;
+        case 'warning':
+            notification.style.background = 'linear-gradient(135deg, #ffa502, #ff7675)';
             break;
         default:
             notification.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
@@ -504,7 +633,7 @@ notificationStyles.textContent = `
             opacity: 1;
         }
     }
-    
+
     @keyframes slideOutRight {
         from {
             transform: translateX(0);
@@ -515,8 +644,162 @@ notificationStyles.textContent = `
             opacity: 0;
         }
     }
+
+    @keyframes slideInUp {
+        from {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideOutDown {
+        from {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+    }
 `;
 document.head.appendChild(notificationStyles);
+
+// Function to show persistent duplicate message above footer
+function showDuplicateMessage(message) {
+    // Clear any existing messages
+    clearDuplicateMessage();
+    clearSuccessMessage();
+
+    // Create duplicate message element
+    const duplicateMessage = document.createElement('div');
+    duplicateMessage.id = 'duplicate-message';
+    duplicateMessage.style.cssText = `
+        position: fixed;
+        bottom: 60px;
+        left: 20px;
+        right: 20px;
+        padding: 2rem 3rem;
+        background: linear-gradient(135deg, #ffa502, #ff7675);
+        color: white;
+        font-weight: bold;
+        text-align: center;
+        z-index: 10000;
+        animation: slideInUp 0.3s ease;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        border-radius: 15px;
+        border: 3px solid #ff6b35;
+        font-size: 1.0em;
+        line-height: 1.4;
+        max-width: 800px;
+        margin: 0 auto;
+        left: 50%;
+        transform: translateX(-50%);
+    `;
+
+    duplicateMessage.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap;">
+            <span style="font-size: 0.95em; flex: 1; min-width: 300px;">${message}</span>
+            <button onclick="clearDuplicateMessage()" style="
+                background: rgba(255, 255, 255, 0.3);
+                border: 2px solid rgba(255, 255, 255, 0.5);
+                color: white;
+                padding: 8px 12px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 0.9em;
+                transition: all 0.3s ease;
+                min-width: 35px;
+            " onmouseover="this.style.background='rgba(255, 255, 255, 0.4)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.3)'">✕</button>
+        </div>
+    `;
+
+    document.body.appendChild(duplicateMessage);
+}
+
+// Function to clear duplicate message
+function clearDuplicateMessage() {
+    const existingMessage = document.getElementById('duplicate-message');
+    if (existingMessage) {
+        existingMessage.style.animation = 'slideOutDown 0.3s ease';
+        setTimeout(() => {
+            if (existingMessage.parentNode) {
+                existingMessage.parentNode.removeChild(existingMessage);
+            }
+        }, 300);
+    }
+}
+
+// Function to show persistent success message above footer
+function showSuccessMessage(message) {
+    // Clear any existing messages
+    clearSuccessMessage();
+    clearDuplicateMessage();
+
+    // Create success message element
+    const successMessage = document.createElement('div');
+    successMessage.id = 'success-message';
+    successMessage.style.cssText = `
+        position: fixed;
+        bottom: 60px;
+        left: 20px;
+        right: 20px;
+        padding: 2rem 3rem;
+        background: linear-gradient(135deg, #2ed573, #26d063);
+        color: white;
+        font-weight: bold;
+        text-align: center;
+        z-index: 10000;
+        animation: slideInUp 0.3s ease;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        border-radius: 15px;
+        border: 3px solid #1dd1a1;
+        font-size: 1.0em;
+        line-height: 1.4;
+        max-width: 800px;
+        margin: 0 auto;
+        left: 50%;
+        transform: translateX(-50%);
+    `;
+
+    successMessage.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap;">
+            <span style="font-size: 0.95em; flex: 1; min-width: 300px;">${message}</span>
+            <button onclick="clearSuccessMessage()" style="
+                background: rgba(255, 255, 255, 0.3);
+                border: 2px solid rgba(255, 255, 255, 0.5);
+                color: white;
+                padding: 8px 12px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 0.9em;
+                transition: all 0.3s ease;
+                min-width: 35px;
+            " onmouseover="this.style.background='rgba(255, 255, 255, 0.4)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.3)'">✕</button>
+        </div>
+    `;
+
+    document.body.appendChild(successMessage);
+}
+
+// Function to clear success message
+function clearSuccessMessage() {
+    const existingMessage = document.getElementById('success-message');
+    if (existingMessage) {
+        existingMessage.style.animation = 'slideOutDown 0.3s ease';
+        setTimeout(() => {
+            if (existingMessage.parentNode) {
+                existingMessage.parentNode.removeChild(existingMessage);
+            }
+        }, 300);
+    }
+}
 
 // Initialize tab navigation
 document.addEventListener('DOMContentLoaded', function() {

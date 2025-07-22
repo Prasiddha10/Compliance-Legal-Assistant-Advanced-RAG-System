@@ -1,0 +1,41 @@
+# Core dependencies
+fastapi
+uvicorn
+python-multipart
+streamlit
+langchain
+langchain-core
+langchain-openai
+langchain-community
+langchain-huggingface
+
+# Vector databases
+chromadb
+pinecone-client
+
+# ML/AI libraries
+transformers
+torch
+sentence-transformers
+
+# Document processing
+PyPDF2
+python-docx
+PyMuPDF
+
+# Web requests and utilities
+requests
+python-dotenv
+pathlib
+langdetect
+
+# API clients
+openai
+groq
+
+# Evaluation and metrics
+datasets
+evaluate
+
+# Development
+pydantic

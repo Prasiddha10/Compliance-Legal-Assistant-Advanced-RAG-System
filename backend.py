@@ -1,5 +1,5 @@
 """
-FastAPI backend for the Human Rights Legal Assistant RAG System
+FastAPI backend for the Compliance Legal Assistant RAG System
 """
 from fastapi import FastAPI, HTTPException, UploadFile, File, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
@@ -30,22 +30,47 @@ evaluation_suite = None
 async def lifespan(app: FastAPI):
     """Initialize and cleanup the RAG system"""
     global rag_pipeline, evaluation_suite
-    
+
     try:
         logger.info("Initializing RAG system...")
+
+        # Check API keys first
+        from src.config import Config
+        missing_keys = []
+        if not Config.OPENAI_API_KEY:
+            missing_keys.append("OPENAI_API_KEY")
+        if not Config.PINECONE_API_KEY:
+            missing_keys.append("PINECONE_API_KEY")
+
+        if missing_keys:
+            logger.error(f"Missing required API keys: {', '.join(missing_keys)}")
+            logger.error("Please create a .env file with your API keys. See .env.template for reference.")
+            # Continue with limited functionality
+
+        # Initialize RAG pipeline
         rag_pipeline = RAGPipeline()
+        logger.info("RAG Pipeline initialized")
+
+        # Initialize evaluation suite
         evaluation_suite = RAGEvaluationSuite()
+        logger.info("Evaluation Suite initialized")
+
         logger.info("RAG system initialized successfully!")
         yield
+
     except Exception as e:
         logger.error(f"Failed to initialize RAG system: {e}")
+        logger.error("The system will run with limited functionality.")
+        # Set minimal fallback instances
+        rag_pipeline = None
+        evaluation_suite = None
         yield
     finally:
         logger.info("Shutting down RAG system...")
 
 app = FastAPI(
-    title="Human Rights Legal Assistant",
-    description="RAG-powered legal assistant for human rights queries",
+    title="Compliance Legal Assistant",
+    description="RAG-powered legal assistant for compliance queries",
     version="1.0.0",
     lifespan=lifespan
 )
@@ -75,6 +100,7 @@ class QueryResponse(BaseModel):
     language_used: str
     detected_language: str
     evaluation_scores: Optional[Dict[str, Any]] = None
+    web_search_results: Optional[List[Dict[str, Any]]] = None
 
 class EvaluationRequest(BaseModel):
     queries: List[str]
@@ -84,6 +110,11 @@ class DocumentUploadResponse(BaseModel):
     filename: str
     status: str
     message: str
+    file_hash: Optional[str] = None
+    is_duplicate: bool = False
+    existing_in_databases: Optional[List[Dict[str, Any]]] = None
+    num_documents: int = 0
+    file_size: Optional[int] = None
 
 # Serve static files
 app.mount("/static", StaticFiles(directory="frontend/static"), name="static")
@@ -99,13 +130,26 @@ async def serve_frontend():
     else:
         return HTMLResponse(content="""
         <html>
-            <head><title>Human Rights Legal Assistant</title></head>
+            <head><title>Compliance Legal Assistant</title></head>
             <body>
-                <h1>Human Rights Legal Assistant</h1>
+                <h1>Compliance Legal Assistant</h1>
                 <p>Frontend files not found. Please ensure frontend/index.html exists.</p>
             </body>
         </html>
         """)
+
+@app.get("/{html_file}")
+async def serve_html_files(html_file: str):
+    """Serve HTML files from the frontend directory."""
+    if not html_file.endswith('.html'):
+        raise HTTPException(status_code=404, detail="File not found")
+    
+    html_path = Path(f"frontend/{html_file}")
+    if html_path.exists():
+        with open(html_path, "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read())
+    else:
+        raise HTTPException(status_code=404, detail="File not found")
 
 @app.get("/health")
 async def health_check():
@@ -183,6 +227,9 @@ async def process_query(request: QueryRequest):
                     "judge_score": 0.0
                 }
         
+        # Extract web search results if available
+        web_search_results = result.get('metadata', {}).get('web_search_results', [])
+
         return QueryResponse(
             answer=result.get('response', 'No response generated'),
             sources=sources,
@@ -192,7 +239,8 @@ async def process_query(request: QueryRequest):
             model_used=request.model or "gpt-3.5-turbo",
             language_used=request.language or "auto",
             detected_language=result.get('detected_language', 'en'),
-            evaluation_scores=evaluation_scores
+            evaluation_scores=evaluation_scores,
+            web_search_results=web_search_results
         )
         
     except Exception as e:
@@ -207,12 +255,13 @@ async def process_query(request: QueryRequest):
             model_used="error",
             language_used="error",
             detected_language="error",
-            evaluation_scores=None
+            evaluation_scores=None,
+            web_search_results=[]
         )
 
 @app.post("/api/upload", response_model=DocumentUploadResponse)
 async def upload_document(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
-    """Upload and process a document."""
+    """Upload and process a document with duplicate detection."""
     if not rag_pipeline:
         raise HTTPException(status_code=500, detail="RAG system not initialized")
     
@@ -229,24 +278,43 @@ async def upload_document(background_tasks: BackgroundTasks, file: UploadFile = 
             content = await file.read()
             buffer.write(content)
         
-        # Process document in background
-        def process_document():
-            try:
-                if rag_pipeline and hasattr(rag_pipeline, 'add_documents'):
-                    result = rag_pipeline.add_documents(str(file_path))
-                    logger.info(f"Document processed: {result}")
-                else:
-                    logger.warning("add_documents method not available or RAG pipeline not initialized")
-            except Exception as e:
-                logger.error(f"Error processing document {file.filename}: {str(e)}")
-        
-        background_tasks.add_task(process_document)
-        
-        return DocumentUploadResponse(
-            filename=file.filename,
-            status="success",
-            message="Document uploaded and queued for processing"
-        )
+        # Process document immediately to check for duplicates
+        if rag_pipeline and hasattr(rag_pipeline, 'add_documents'):
+            result = rag_pipeline.add_documents(str(file_path))
+            logger.info(f"Document processing result: {result}")
+            
+            # Check if document was a duplicate
+            if result.get("status") == "duplicate":
+                # Document already exists
+                return DocumentUploadResponse(
+                    filename=file.filename,
+                    status="duplicate",
+                    message=result.get("message", f"Document '{file.filename}' already exists in the vector databases"),
+                    file_hash=result.get("file_hash"),
+                    is_duplicate=True,
+                    existing_in_databases=result.get("existing_in_databases", []),
+                    num_documents=result.get("num_documents", 0),
+                    file_size=result.get("file_size")
+                )
+            else:
+                # Document was successfully processed
+                return DocumentUploadResponse(
+                    filename=file.filename,
+                    status="success",
+                    message=result.get("message", f"Document '{file.filename}' uploaded and processed successfully"),
+                    file_hash=result.get("file_hash"),
+                    is_duplicate=False,
+                    existing_in_databases=None,
+                    num_documents=result.get("num_documents", 0),
+                    file_size=result.get("file_size")
+                )
+        else:
+            logger.warning("add_documents method not available or RAG pipeline not initialized")
+            return DocumentUploadResponse(
+                filename=file.filename,
+                status="error",
+                message="RAG pipeline not properly initialized"
+            )
         
     except Exception as e:
         logger.error(f"Error uploading document: {str(e)}")
@@ -259,8 +327,11 @@ async def run_evaluation(request: EvaluationRequest):
         raise HTTPException(status_code=500, detail="Evaluation suite not initialized")
     
     try:
-        results = {}
+        evaluation_results = []
+        total_scores = []
+        
         for query in request.queries:
+            ground_truth_docs = None  # No ground_truth_docs since queries are strings
             if rag_pipeline:
                 # Generate response for the query
                 result = rag_pipeline.query(query)
@@ -268,33 +339,72 @@ async def run_evaluation(request: EvaluationRequest):
                 
                 # Run evaluation if we have a valid response
                 if response_text and not response_text.startswith("Error generating response:"):
-                    eval_result = evaluation_suite.evaluate_response(query, response_text, result.get('context', ''))
+                    eval_result = evaluation_suite.evaluate_response(
+                        query, response_text, result.get('context', ''),
+                        ground_truth_docs=ground_truth_docs, rag_result=result
+                    )
                     
+                    overall_score = eval_result.get('overall_performance', 0.0)
+                    generation_score = eval_result.get('generation_metrics', {}).get('overall_quality', 0.0)
+                    judge_score_raw = eval_result.get('judge_evaluation', {}).get('comprehensive_score', 0.0)
+                    judge_score = judge_score_raw / 10.0 if judge_score_raw else 0.0
+
+                    # Extract retrieval score properly
+                    retrieval_metrics = eval_result.get('retrieval_metrics', {})
+                    retrieval_score = retrieval_metrics.get('avg_score', 0.0)
+
+                    # Debug logging
+                    logger.info(f"Evaluation API - Retrieval metrics: {retrieval_metrics}")
+                    logger.info(f"Evaluation API - Initial retrieval score: {retrieval_score}")
+
+                    # If avg_score is 0, try other retrieval metrics
+                    if retrieval_score == 0.0:
+                        retrieval_score = max(
+                            retrieval_metrics.get('avg_relevance', 0.0),
+                            retrieval_metrics.get('max_score', 0.0),
+                            retrieval_metrics.get('ndcg@5', 0.0),
+                            retrieval_metrics.get('ndcg@3', 0.0)
+                        )
+                        logger.info(f"Evaluation API - Fallback retrieval score: {retrieval_score}")
+
+                    logger.info(f"Evaluation API - Final retrieval score for '{query[:30]}...': {retrieval_score}")
+
                     # Format evaluation result
                     formatted_result = {
                         "query": query,
                         "response": response_text,
-                        "overall_score": eval_result.get('overall_performance', 0.0),
-                        "generation_score": eval_result.get('generation_metrics', {}).get('overall_quality', 0.0),
-                        "judge_score": eval_result.get('judge_evaluation', {}).get('comprehensive_score', 0.0) / 10.0 if eval_result.get('judge_evaluation', {}).get('comprehensive_score') else 0.0,
+                        "overall_score": overall_score,
+                        "retrieval_score": retrieval_score,  # Add retrieval score to top level
+                        "generation_score": generation_score,
+                        "judge_score": judge_score,
                         "database_used": result.get('database_used', 'unknown'),
                         "processing_time": eval_result.get('processing_time', 0.0),
                         "llm_model": result.get('metadata', {}).get('model_used', 'unknown'),
-                        "detailed_metrics": eval_result if request.include_detailed_metrics else None
+                        "detailed_metrics": {
+                            "retrieval_score": retrieval_score,
+                            "generation_score": generation_score,
+                            "judge_score": judge_score,
+                            "processing_time": eval_result.get('processing_time', 0.0),
+                            "retrieval_details": retrieval_metrics  # Include full retrieval metrics
+                        } if request.include_detailed_metrics else None
                     }
-                    results[query] = formatted_result
+                    evaluation_results.append(formatted_result)
+                    total_scores.append(overall_score)
                 else:
                     # Handle error responses
-                    results[query] = {
+                    error_result = {
                         "query": query,
                         "response": response_text,
                         "overall_score": 0.0,
+                        "retrieval_score": 0.0,
                         "generation_score": 0.0,
                         "judge_score": 0.0,
                         "error": "Failed to generate response"
                     }
+                    evaluation_results.append(error_result)
+                    total_scores.append(0.0)
             else:
-                results[query] = {
+                error_result = {
                     "query": query,
                     "response": "RAG pipeline not available",
                     "overall_score": 0.0,
@@ -302,8 +412,22 @@ async def run_evaluation(request: EvaluationRequest):
                     "judge_score": 0.0,
                     "error": "RAG pipeline not initialized"
                 }
+                evaluation_results.append(error_result)
+                total_scores.append(0.0)
         
-        return {"results": results}
+        # Calculate summary statistics
+        average_score = sum(total_scores) / len(total_scores) if total_scores else 0.0
+        
+        response_data = {
+            "summary": {
+                "total_queries": len(request.queries),
+                "average_score": average_score,
+                "timestamp": time.time()
+            },
+            "evaluation_results": evaluation_results
+        }
+        
+        return response_data
         
     except Exception as e:
         logger.error(f"Error running evaluation: {str(e)}")
@@ -395,5 +519,5 @@ async def get_stats():
 
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.getenv("PORT", 8004))
+    port = int(os.getenv("PORT", 8005))
     uvicorn.run(app, host="0.0.0.0", port=port)

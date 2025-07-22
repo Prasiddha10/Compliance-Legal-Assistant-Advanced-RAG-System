@@ -121,10 +121,21 @@ class PineconeDBManager:
         """Perform similarity search with relevance scores."""
         try:
             results = self.vectorstore.similarity_search_with_score(query, k=k)
-            
-            logger.info(f"Found {len(results)} similar documents with scores")
-            return results
-            
+            logger.debug(f"PineconeDB search returned {len(results)} results")
+            # Ensure results are always (Document, score) tuples
+            fixed_results = []
+            for item in results:
+                if isinstance(item, tuple) and len(item) == 2:
+                    doc, score = item
+                elif isinstance(item, dict) and 'document' in item and 'score' in item:
+                    doc = item['document']
+                    score = item['score']
+                else:
+                    logger.warning(f"Unexpected result format in PineconeDBManager: {item}")
+                    continue
+                fixed_results.append((doc, float(score)))
+            logger.debug(f"PineconeDB extracted {len(fixed_results)} document results")
+            return fixed_results
         except Exception as e:
             logger.error(f"Error in similarity search with scores: {e}")
             raise
@@ -206,3 +217,97 @@ class PineconeDBManager:
                 "error": str(e),
                 "message": "Pinecone connection test failed"
             }
+    
+    def check_document_exists(self, file_path: str, file_hash: Optional[str] = None) -> Dict[str, Any]:
+        """Check if a document already exists in Pinecone."""
+        try:
+            # Pinecone doesn't have direct metadata filtering for existence check
+            # We'll use the metadata filter in a dummy search to check for documents with this source
+            
+            # Create a simple query to search for documents with this source
+            dummy_results = self.vectorstore.similarity_search(
+                "dummy query",  # This will be ignored due to metadata filter
+                k=1,
+                filter={"source": file_path}
+            )
+            
+            if dummy_results:
+                # Try to get more documents with this source to count them
+                all_results = self.vectorstore.similarity_search(
+                    "dummy query",
+                    k=10000,  # Large number to get all chunks
+                    filter={"source": file_path}
+                )
+                
+                return {
+                    "exists": True,
+                    "database": "Pinecone",
+                    "file_path": file_path,
+                    "document_count": len(all_results),
+                    "detected_by": "source_path"
+                }
+            
+            # If file hash is provided, also check by hash
+            if file_hash:
+                hash_results = self.vectorstore.similarity_search(
+                    "dummy query",
+                    k=1,
+                    filter={"file_hash": file_hash}
+                )
+                
+                if hash_results:
+                    all_hash_results = self.vectorstore.similarity_search(
+                        "dummy query",
+                        k=10000,
+                        filter={"file_hash": file_hash}
+                    )
+                    
+                    return {
+                        "exists": True,
+                        "database": "Pinecone",
+                        "file_path": file_path,
+                        "file_hash": file_hash,
+                        "document_count": len(all_hash_results),
+                        "detected_by": "file_hash"
+                    }
+            
+            return {
+                "exists": False,
+                "database": "Pinecone",
+                "file_path": file_path
+            }
+            
+        except Exception as e:
+            logger.error(f"Error checking document existence in Pinecone: {e}")
+            return {
+                "exists": False,
+                "database": "Pinecone",
+                "file_path": file_path,
+                "error": str(e)
+            }
+    
+    def get_all_document_sources(self) -> List[str]:
+        """Get all unique document source paths in Pinecone (limited approach)."""
+        try:
+            # Note: Pinecone doesn't provide easy way to get all unique metadata values
+            # This is a limitation of Pinecone compared to ChromaDB
+            # We can only do this by doing similarity searches and collecting sources
+            
+            # This is an approximation - we'll search for common terms and collect sources
+            common_terms = ["document", "text", "legal", "rights", "human", "law", "article", "section"]
+            sources = set()
+            
+            for term in common_terms:
+                try:
+                    results = self.vectorstore.similarity_search(term, k=100)
+                    for doc in results:
+                        if hasattr(doc, 'metadata') and 'source' in doc.metadata:
+                            sources.add(doc.metadata['source'])
+                except Exception:
+                    continue
+            
+            return list(sources)
+            
+        except Exception as e:
+            logger.error(f"Error getting document sources from Pinecone: {e}")
+            return []

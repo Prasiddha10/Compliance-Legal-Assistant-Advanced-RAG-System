@@ -210,29 +210,147 @@ body {
     margin-bottom: 0.3rem;
 }
 
-.message-sources {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid #e0e0e0;
-}
-
-.source-item {
-    background: #f8f9fa;
-    padding: 0.8rem;
-    margin-bottom: 0.5rem;
-    border-radius: 8px;
+/* Feature highlight styling */
+.feature-highlight {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border-radius: 10px;
     border-left: 4px solid #667eea;
 }
 
-.source-title {
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 0.3rem;
+.feature-highlight ul {
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
 }
 
-.source-content {
+.feature-highlight li {
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+
+.feature-highlight strong {
+    color: #667eea;
+}
+
+/* Info note styling */
+.info-note {
+    margin: 1rem 0;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 193, 7, 0.1);
+    border-radius: 8px;
+    border-left: 4px solid #FFC107;
+}
+
+.info-note p {
+    margin: 0;
+    color: #856404;
     font-size: 0.9rem;
+}
+
+.info-note em {
+    font-style: normal;
+    font-weight: 500;
+}
+
+/* Web search results styling */
+.message-web-search {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(76, 175, 80, 0.1);
+    border-radius: 8px;
+    border-left: 4px solid #4CAF50;
+}
+
+.message-web-search h4 {
+    margin: 0 0 0.75rem 0;
+    color: #4CAF50;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.web-result-item {
+    margin-bottom: 0.75rem;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 6px;
+    border: 1px solid rgba(76, 175, 80, 0.2);
+    transition: all 0.2s ease;
+}
+
+.web-result-item:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(76, 175, 80, 0.4);
+    transform: translateY(-1px);
+}
+
+.web-result-link {
+    color: #4CAF50;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.web-result-link:hover {
+    color: #66BB6A;
+    text-decoration: underline;
+}
+
+.web-result-snippet {
     color: #666;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Article reference styling - bold blue background like official documents */
+.article-reference {
+    color: white !important;
+    font-weight: 700 !important;
+    background-color: #2979FF !important;
+    background: #2979FF !important;
+    padding: 4px 8px !important;
+    border-radius: 4px !important;
+    border: 2px solid #0d47a1 !important;
+    font-size: 0.9em !important;
+    display: inline-block !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    box-shadow: 0 2px 4px rgba(25, 118, 210, 0.3) !important;
+    margin: 0 2px !important;
+}
+
+/* Additional specific selectors to ensure styling is applied */
+.chat-message .article-reference,
+.message-content .article-reference,
+.message-text .article-reference,
+.bot-message .article-reference,
+.user-message .article-reference {
+    color: white !important;
+    background-color: #2979FF !important;
+    background: #2979FF !important;
+    padding: 4px 8px !important;
+    border-radius: 4px !important;
+    border: 2px solid #0d47a1 !important;
+    font-weight: 700 !important;
+    display: inline-block !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    box-shadow: 0 2px 4px rgba(25, 118, 210, 0.3) !important;
+    margin: 0 2px !important;
+}
+
+/* Specific override for user messages */
+.user-message .message-content .article-reference {
+    color: white !important;
+    background-color: #2979FF !important;
+    background: #2979FF !important;
+    border: 2px solid #0d47a1 !important;
 }
 
 .chat-input-container {
@@ -538,6 +656,40 @@ body {
 .result-score {
     color: #667eea;
     font-weight: bold;
+}
+
+.result-details {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.metric-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.metric-row:last-child {
+    border-bottom: none;
+}
+
+.metric-label {
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+.metric-value {
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.8);
 }
 
 .message-evaluations {

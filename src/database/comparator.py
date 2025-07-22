@@ -80,11 +80,15 @@ class DatabaseComparator:
         if self.chroma_db:
             try:
                 chroma_docs = self.chroma_db.similarity_search_with_score(query, k)
+                # Convert ChromaDB distance scores to relevance scores
+                # ChromaDB returns distance (lower = more similar), so we convert to relevance (higher = more relevant)
+                max_distance = max(score for _, score in chroma_docs) if chroma_docs else 1.0
                 results["chroma_results"] = [
                     {
                         "content": doc.page_content,
-                        "score": score,
-                        "metadata": doc.metadata
+                        "score": max(0.1, 1.0 - (score / (max_distance + 0.1))),  # Convert distance to relevance
+                        "metadata": doc.metadata,
+                        "original_distance": score  # Keep original for debugging
                     }
                     for doc, score in chroma_docs
                 ]
@@ -133,9 +137,10 @@ class DatabaseComparator:
         metrics["overlap_ratio"] = overlap / len(chroma_results) if chroma_results else 0
         metrics["jaccard_similarity"] = overlap / total_unique if total_unique > 0 else 0
         
-        # Average scores
+        # Average scores (using converted relevance scores)
         if chroma_results:
             metrics["chroma_avg_score"] = sum(r["score"] for r in chroma_results) / len(chroma_results)
+            metrics["chroma_avg_distance"] = sum(r.get("original_distance", 0) for r in chroma_results) / len(chroma_results)
         
         if pinecone_results:
             metrics["pinecone_avg_score"] = sum(r["score"] for r in pinecone_results) / len(pinecone_results)
@@ -208,5 +213,64 @@ class DatabaseComparator:
                     "time_taken": 0,
                     "count": 0
                 }
+        
+        return results
+    
+    from typing import Optional
+
+    def check_document_exists_in_all(self, file_path: str, file_hash: Optional[str] = None) -> Dict[str, Any]:
+        """Check if document exists in any of the available databases."""
+        results = {
+            "file_path": file_path,
+            "file_hash": file_hash,
+            "exists_anywhere": False,
+            "databases": {}
+        }
+        
+        # Check ChromaDB
+        if self.chroma_db:
+            try:
+                chroma_result = self.chroma_db.check_document_exists(file_path, file_hash)
+                results["databases"]["chroma"] = chroma_result
+                if chroma_result.get("exists", False):
+                    results["exists_anywhere"] = True
+            except Exception as e:
+                results["databases"]["chroma"] = {
+                    "exists": False,
+                    "error": str(e)
+                }
+        
+        # Check Pinecone
+        if self.pinecone_db:
+            try:
+                pinecone_result = self.pinecone_db.check_document_exists(file_path, file_hash)
+                results["databases"]["pinecone"] = pinecone_result
+                if pinecone_result.get("exists", False):
+                    results["exists_anywhere"] = True
+            except Exception as e:
+                results["databases"]["pinecone"] = {
+                    "exists": False,
+                    "error": str(e)
+                }
+        
+        return results
+    
+    def get_all_document_sources(self) -> Dict[str, List[str]]:
+        """Get all document sources from all databases."""
+        results = {}
+        
+        if self.chroma_db:
+            try:
+                results["chroma"] = self.chroma_db.get_all_document_sources()
+            except Exception as e:
+                logger.error(f"Error getting sources from ChromaDB: {e}")
+                results["chroma"] = []
+        
+        if self.pinecone_db:
+            try:
+                results["pinecone"] = self.pinecone_db.get_all_document_sources()
+            except Exception as e:
+                logger.error(f"Error getting sources from Pinecone: {e}")
+                results["pinecone"] = []
         
         return results

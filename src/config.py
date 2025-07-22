@@ -20,7 +20,7 @@ os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
 class Config:
     """Configuration class for the RAG system."""
     
-    # API Keys  
+    # API Keys
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
     PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
@@ -31,12 +31,12 @@ class Config:
     # LangSmith Configuration
     LANGCHAIN_TRACING_V2 = os.getenv("LANGCHAIN_TRACING_V2", "true")
     LANGCHAIN_ENDPOINT = os.getenv("LANGCHAIN_ENDPOINT", "https://api.smith.langchain.com")
-    LANGCHAIN_PROJECT = os.getenv("LANGCHAIN_PROJECT", "rag-human-rights-evaluation")
+    LANGCHAIN_PROJECT = os.getenv("LANGCHAIN_PROJECT", "rag-compliance-evaluation")
     
     # Database Configuration
     CHROMA_PERSIST_DIRECTORY = os.getenv("CHROMA_PERSIST_DIRECTORY", "./data/chroma_db")
-    CHROMA_COLLECTION_NAME = os.getenv("CHROMA_COLLECTION_NAME", "human_rights_docs")
-    PINECONE_INDEX_NAME = os.getenv("PINECONE_INDEX_NAME", "human-rights-index")
+    CHROMA_COLLECTION_NAME = os.getenv("CHROMA_COLLECTION_NAME", "compliance_docs")
+    PINECONE_INDEX_NAME = os.getenv("PINECONE_INDEX_NAME", "compliance-index")
     
     # Model Configuration  
     # Important: Match embedding dimension with Pinecone index dimension (1024)
@@ -107,4 +107,3 @@ class Config:
         components.append("pdf_processing")  # Always available
         
         return components
-        return True
