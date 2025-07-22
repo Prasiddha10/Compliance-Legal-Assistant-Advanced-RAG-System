@@ -86,7 +86,7 @@ A sophisticated Retrieval-Augmented Generation (RAG) system specifically designe
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Web Frontend  │    │  FastAPI Backend │    │ LangGraph Pipeline│
-│                 │◄──►│                 │◄──►│                 │
+│                 │◄──►│                 │◄──►│                    │
 │ • HTML/CSS/JS   │    │ • REST APIs     │    │ • State Management│
 │ • Real-time UI  │    │ • CORS Support  │    │ • Workflow Nodes │
 │ • File Upload   │    │ • Error Handling│    │ • Memory Saver  │
