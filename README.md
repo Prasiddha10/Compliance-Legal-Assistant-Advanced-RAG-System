@@ -84,14 +84,14 @@ A sophisticated Retrieval-Augmented Generation (RAG) system specifically designe
 ### Core Technology Stack
 
 ```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+┌─────────────────┐    ┌──────────────────┐    ┌───────────────────┐
 │   Web Frontend  │    │  FastAPI Backend │    │ LangGraph Pipeline│
-│                 │◄──►│                  │◄──►│                    │
+│                 │◄──►│                  │◄──►│                   │
 │ • HTML/CSS/JS   │    │ • REST APIs      │    │ • State Management│
-│ • Real-time UI  │    │ • CORS Support   │    │ • Workflow Nodes │
-│ • File Upload   │    │ • Error Handling │    │ • Memory Saver  │
-│ • Evaluation    │    │ • Async Support  │    │ • Type Safety   │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
+│ • Real-time UI  │    │ • CORS Support   │    │ • Workflow Nodes  │
+│ • File Upload   │    │ • Error Handling │    │ • Memory Saver    │
+│ • Evaluation    │    │ • Async Support  │    │ • Type Safety     │
+└─────────────────┘    └──────────────────┘    └───────────────────┘
                                 │
                                 ▼
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
@@ -169,7 +169,7 @@ A sophisticated Retrieval-Augmented Generation (RAG) system specifically designe
 ```bash
 # Clone the repository
 git clone <repository-url>
-cd compliance-legal-assistant
+cd Compliance-Legal-Assistant-Advanced-RAG-System
 
 # Create virtual environment
 python -m venv venv
@@ -490,7 +490,7 @@ langdetect                 # Language detection
 # Multi-Provider LLM Configuration
 LLM_CONFIG = {
     "openai": {
-        "model": "gpt-4",
+        "model": "gpt-3.5 tturbo",
         "temperature": 0.1,
         "max_tokens": 1000,
         "top_p": 0.9
@@ -567,7 +567,7 @@ LANGUAGE_CONFIG = {
 FROM python:3.9-slim
 
 WORKDIR /app
-COPY requirements.txt .
+COPY requirements.txt.
 RUN pip install -r requirements.txt
 
 COPY . .
@@ -578,7 +578,7 @@ CMD ["python", "backend.py"]
 
 ```bash
 # Build and run with Docker
-docker build -t compliance-rag .
+docker build -t compliance-rag.
 docker run -p 8005:8005 \
   -e OPENAI_API_KEY=your_key \
   -e PINECONE_API_KEY=your_key \
@@ -618,8 +618,8 @@ We welcome contributions to improve the Compliance Legal Assistant! Here's how y
 
 ```bash
 # Fork the repository and clone your fork
-git clone https://github.com/yourusername/compliance-legal-assistant.git
-cd compliance-legal-assistant
+git clone https://github.com/Prasiddha10/Compliance-Legal-Assistant-Advanced-RAG-System
+cd Compliance-Legal-Assistant-Advanced-RAG-System
 
 # Create a feature branch
 git checkout -b feature/amazing-feature
@@ -693,7 +693,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Built with ❤️ for advancing compliance knowledge and legal accessibility through AI**
 
-*For questions, issues, or contributions, please visit our [GitHub repository](https://github.com/yourusername/compliance-legal-assistant) or contact the development team.*
+*For questions, issues, or contributions, please visit our [GitHub repository](https://github.com/Prasiddha10/Compliance-Legal-Assistant-Advanced-RAG-System) or contact the development team.*
 
 #### **1. Advanced Retrieval Scoring**
 - **Implementation**: Sophisticated distance-to-relevance conversion using `relevance = 1.0 / (1.0 + distance)`
