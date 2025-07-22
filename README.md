@@ -77,7 +77,7 @@ A sophisticated Retrieval-Augmented Generation (RAG) system specifically designe
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                          LangSmith Monitoring                               │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│  • Real-time Tracing  • Performance Analytics  • Error Tracking  • Costs   │
+│  • Real-time Tracing  • Performance Analytics  • Error Tracking  • Costs    │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
